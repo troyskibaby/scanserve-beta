@@ -1,0 +1,314 @@
+/* Global styles for the form */
+body {
+  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  color: #1A2238;
+  background-color: #1A2238;
+  margin: 0;
+  padding: 0;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+form, .container {
+  width: 100%;
+}
+.css-3hpdci-MuiSvgIcon-root-MuiStepIcon-root.Mui-active{
+  color: #FF6A3d !important;
+}
+path {
+  color: #FF6A3d;
+}
+
+.h2{
+  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  color: #1A2238;
+  font-size: 1em !important;
+}
+.account-type-cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  
+}
+
+.card {
+  width: 45%;
+  padding: 20px;
+  border: 1px solid #FF6A3d;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  background-color: #fff;
+  text-align: left;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+.input.error {
+  border: 1px solid red;
+  background-color: #fdd;
+}
+
+.password-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.password-item span {
+  margin-right: 10px;  /* Space between icon and text */
+  font-size: 18px;  /* Size of the tick/cross icon */
+}
+
+.password-requirements p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.password-requirements .valid {
+  color: green;
+}
+
+.password-requirements .invalid {
+  color: red;
+}
+
+.password-item .valid-icon {
+  color: green;
+}
+
+.password-item .invalid-icon {
+  color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card input {
+  display: none; /* Hide the default radio button */
+}
+
+.card.selected {
+  border-color: #FF6A3d;
+  background-color: #FF6A3d;
+  color: white;
+}
+
+.card.selected p {
+  color: white;
+}
+
+.card-content.selected {
+  font-size: 20px;
+  color: #1A2238;
+}
+
+
+.card-content p {
+  font-size: 14px;
+  color: #1A2238;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.form-field-inline {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.step-container {
+  justify-content: space-between;
+  max-width: 100%;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  color: #1A2238;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #1A2238;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #9daaf2;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #FF6A3d;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+.step-buttons {
+  display: flex;
+  justify-content: space-between !important; /* Distribute buttons on the same line */
+  width: 100%;
+}
+
+.step-buttons .primary-button {
+  padding: 6px 16px 6px 16px;
+  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  font-weight:550px;
+  text-transform: none;
+  font-size: 16px;
+  background-color: #1A2238;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 48%;
+  transition: background-color 0.3s ease;
+}
+
+.step-buttons .secondary-button {
+  padding: 6px 16px 6px 16px;
+  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  font-weight:550px;
+  text-transform: none;
+  font-size: 16px;
+  background-color: white;
+  color: #1A2238;
+  border-color:#1A2238;
+  border: solid 1px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 48%;
+  transition: background-color 0.3s ease;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 16px;
+  background-color: #9daaf2;
+  color: #1A2238;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 48%;
+  transition: background-color 0.3s ease;
+}
+
+.error {
+  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  color: red;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.step {
+  width: 25%;
+  text-align: center;
+  font-weight: bold;
+  color: #FF6A3d;
+}
+
+.step.active {
+  color: #1A2238;
+}
+
+/* Progress bar style */
+.progress-bar {
+  height: 5px;
+  background-color: #FF6A3d;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background-color: #E55B2E;
+  width: 0%; /* This will be dynamically updated based on progress */
+  border-radius: 5px;
+}
+
+
+.App {
+  display: flex;
+  flex-direction: column;
+
+  
+  padding-top: 20px;
+}
+
+/* General styling for input fields */
+.input-field {
+  font-size: 16px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Default border */
+  background-color: #fff; /* Default background */
+}
+
+/* Error styling */
+.input-field.error {
+  border-color: #f44336; /* Red border */
+  background-color: #fdd; /* Pale red background */
+}
+
+/* Optional: Style for error message */
+.error-message {
+  color: #f44336; /* Red text for the error message */
+  font-size: 14px;
+  margin-top: -8px;
+  margin-bottom: 10px;
+}
+
