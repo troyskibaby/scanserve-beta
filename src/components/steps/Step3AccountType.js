@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 
 const AccountTypeStep = ({ formData, setFormData, nextStep, prevStep, setErrors, errors }) => {
-  const [accountType, setAccountType] = useState(formData.accountType);
+  const [accountType, setAccountType] = useState(formData.accountType || '');
 
   const handleAccountTypeChange = (e) => {
-    setAccountType(e.target.value);
-    setFormData({ ...formData, accountType: e.target.value }); // Update formData on account type change
-    setErrors({ ...errors, accountType: '' }); // Clear any error
+    const selectedType = e.target.value;
+    setAccountType(selectedType);
+    setFormData({ ...formData, accountType: selectedType });
+    setErrors({ ...errors, accountType: '' }); // Clear error when selection is made
+  };
+
+  const handleNext = () => {
+    if (!accountType) {
+      setErrors({ ...errors, accountType: 'You must select a role' });
+    } else {
+      nextStep();
+    }
   };
 
   return (
-    <div >
+    <div>
       <h2>What role best describes you?</h2>
-      
+
       <div className="account-type-cards">
+        {/* Homeowner Card */}
         <label className={`card ${accountType === 'Homeowner' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -29,6 +39,7 @@ const AccountTypeStep = ({ formData, setFormData, nextStep, prevStep, setErrors,
           </div>
         </label>
 
+        {/* Plumber Card */}
         <label className={`card ${accountType === 'Plumber' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -45,9 +56,14 @@ const AccountTypeStep = ({ formData, setFormData, nextStep, prevStep, setErrors,
         </label>
       </div>
 
+      {/* Error Message */}
       {errors.accountType && <p className="error-message">{errors.accountType}</p>}
 
-     
+      {/* Navigation Buttons */}
+      <div className="step-buttons">
+        <button onClick={prevStep} className="secondary-button">Back</button>
+        <button onClick={handleNext} className="primary-button">Next</button>
+      </div>
     </div>
   );
 };

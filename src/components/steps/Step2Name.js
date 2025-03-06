@@ -16,35 +16,47 @@ const NameStep = ({ formData, setFormData, nextStep, prevStep, setErrors, errors
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
-    setFormData({ ...formData, firstName: e.target.value }); // Update formData on first name change
-    setErrors({ ...errors, name: '' });
+    setFormData({ ...formData, firstName: e.target.value });
+    setErrors({ ...errors, firstName: '' });
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
-    setFormData({ ...formData, lastName: e.target.value }); // Update formData on last name change
-    setErrors({ ...errors, name: '' });
+    setFormData({ ...formData, lastName: e.target.value });
+    setErrors({ ...errors, lastName: '' });
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setFormData({ ...formData, password: e.target.value }); // Update formData on password change
+    setFormData({ ...formData, password: e.target.value });
     setErrors({ ...errors, password: '' });
   };
 
   // Validate password requirements
   const validatePassword = () => {
-    const failedRequirements = passwordRequirements.filter((req) => !req.test.test(password));
-    if (failedRequirements.length > 0) {
-      return failedRequirements.map((req) => req.message);
-    }
-    return [];
+    return passwordRequirements
+      .filter((req) => !req.test.test(password))
+      .map((req) => req.message);
   };
 
   const handleNext = () => {
     const passwordErrors = validatePassword();
-    if (passwordErrors.length > 0) {
-      setErrors({ ...errors, password: passwordErrors });
+    const newErrors = {};
+
+    if (!firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    }
+    if (!lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    }
+    if (!password.trim()) {
+      newErrors.password = ['Password is required'];
+    } else if (passwordErrors.length > 0) {
+      newErrors.password = passwordErrors;
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors({ ...errors, ...newErrors });
     } else {
       nextStep();
     }
@@ -61,8 +73,9 @@ const NameStep = ({ formData, setFormData, nextStep, prevStep, setErrors, errors
           id="firstName"
           value={firstName}
           onChange={handleFirstNameChange}
-          className={`input ${errors.name ? 'error' : ''}`}
+          className={`input ${errors.firstName ? 'error' : ''}`}
         />
+        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
 
         {/* Last Name */}
         <input
@@ -71,9 +84,9 @@ const NameStep = ({ formData, setFormData, nextStep, prevStep, setErrors, errors
           id="lastName"
           value={lastName}
           onChange={handleLastNameChange}
-          className={`input ${errors.name ? 'error' : ''}`}
+          className={`input ${errors.lastName ? 'error' : ''}`}
         />
-        {errors.name && <p className="error-message">{errors.name}</p>}
+        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
       </div>
 
       {/* Password Field */}
@@ -100,16 +113,14 @@ const NameStep = ({ formData, setFormData, nextStep, prevStep, setErrors, errors
         </div>
 
         {/* Password Validation Errors */}
-        {errors.password && (
-          <div className="error-message">
-            {errors.password.map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
-          </div>
-        )}
+       
       </div>
 
-    
+      {/* Navigation Buttons */}
+      <div className="step-buttons">
+        <button onClick={prevStep} className="secondary-button">Previous</button>
+        <button onClick={handleNext} className="primary-button">Next</button>
+      </div>
     </div>
   );
 };

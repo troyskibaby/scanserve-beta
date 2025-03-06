@@ -26,12 +26,24 @@
     font-weight: bold;
     color: #FF6A3d;
   }
-  
-  .header-right {
-    text-align: right;
+  .header-left a {
+    display: block;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #F4DB7D;
+    text-decoration: none;
+    margin-top: 8px;
+    padding-right: 10px;
   }
-  
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+
+
   .header-right img {
+    margin-right: 20px;
     height: 50px;
   }
   
@@ -45,3 +57,35 @@
     padding-right: 10px;
   }
   
+  /* User container (displayed when logged in) */
+.header-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 20px;
+}
+
+.header-user {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;  /* Green for greeting */
+}
+
+.header-logout-button {
+  font-size: 14px;
+  background: none;
+  border: none;
+  color: #FF6A3d;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-top: 4px;
+}
+
+/* Sign In link styling */
+.header-signin {
+  font-size: 16px;
+  font-weight: bold;
+  color: #FF6A3d;
+  margin-left: 20px;
+}

@@ -1,6 +1,7 @@
 /* Global styles for the form */
+
 body {
-  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  font-family: 'Ubuntu', sans-serif !important;
   color: #1A2238;
   background-color: #1A2238;
   margin: 0;
@@ -9,6 +10,20 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+.custom-checkbox-container input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  padding: 10px 10px 12px 10px;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: 1px;
+}
+
+
+.MuiStepLabel-label{
+  font-family: 'Ubuntu', sans-serif !important;
 }
 form, .container {
   width: 100%;
@@ -19,13 +34,52 @@ form, .container {
 path {
   color: #FF6A3d;
 }
+.verification-container {
+  
+  text-align: center;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f4f7f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.verification-container h2 {
+  
+  color: #1A2238;
+  
+}
+
+.verification-container p {
+  
+  font-size: 16px;
+  color: #333;
+}
+
+.verification-container a {
+  
+  color: #FF6A3D;
+  font-weight: bold;
+}
+
 
 .h2{
-  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  
   color: #1A2238;
   font-size: 1em !important;
 }
 .account-type-cards {
+  
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  
+}
+
+.subscription-cards {
+  
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -34,6 +88,7 @@ path {
 }
 
 .card {
+  
   width: 45%;
   padding: 20px;
   border: 1px solid #FF6A3d;
@@ -45,104 +100,104 @@ path {
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 .input.error {
+  font-family: 'Ubuntu', sans-serif !important;
   border: 1px solid red;
   background-color: #fdd;
 }
 
 .password-item {
+  
   display: flex;
   align-items: center;
   margin-bottom: 8px;
 }
 
 .password-item span {
+  
   margin-right: 10px;  /* Space between icon and text */
   font-size: 18px;  /* Size of the tick/cross icon */
 }
 
 .password-requirements p {
+  
   margin: 5px 0;
   font-size: 14px;
 }
 
 .password-requirements .valid {
+  
   color: green;
 }
 
 .password-requirements .invalid {
+  
   color: red;
 }
 
 .password-item .valid-icon {
+  
   color: green;
 }
 
 .password-item .invalid-icon {
+  
   color: red;
 }
 
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-}
 
-
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-}
 
 .card:hover {
   transform: translateY(-5px);
 }
 
 .card input {
+  
   display: none; /* Hide the default radio button */
 }
 
 .card.selected {
+  
   border-color: #FF6A3d;
   background-color: #FF6A3d;
   color: white;
 }
 
 .card.selected p {
+  
   color: white;
 }
 
 .card-content.selected {
+  
   font-size: 20px;
   color: #1A2238;
 }
 
 
 .card-content p {
+  
   font-size: 14px;
   color: #1A2238;
   margin-top: 10px;
 }
 
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
-}
 
 .form-field-inline {
+  
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
 .step-buttons {
+  
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
 .step-container {
+  
   justify-content: space-between;
   max-width: 100%;
   margin: 0 auto;
@@ -153,6 +208,7 @@ path {
 }
 
 h1 {
+  
   font-size: 24px;
   color: #1A2238;
   margin-bottom: 30px;
@@ -160,17 +216,21 @@ h1 {
 }
 
 label {
+ 
   display: block;
-  margin-bottom: 8px;
   font-weight: bold;
   color: #1A2238;
 }
+
+
 
 input[type="email"],
 input[type="text"],
 input[type="password"],
 select {
+  font-family: 'Ubuntu', sans-serif !important;
   width: 100%;
+  margin-top: 5px;
   padding: 12px;
   font-size: 16px;
   border-radius: 5px;
@@ -180,6 +240,7 @@ select {
 }
 
 textarea {
+  
   width: 100%;
   padding: 12px;
   font-size: 16px;
@@ -189,14 +250,50 @@ textarea {
   box-sizing: border-box;
 }
 .step-buttons {
+  
   display: flex;
   justify-content: space-between !important; /* Distribute buttons on the same line */
   width: 100%;
 }
 
+/* Override global input styles for MUI Checkbox */
+.MuiCheckbox-root {
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.css-19opgx6-MuiFormControlLabel-root {
+  margin: 0px 0px 0px 0px !important;
+}
+
+
+/* Specifically target the SVG icon inside the checkbox */
+.MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root {
+  width: 24px !important;
+  height: 24px !important;
+  fill: currentColor !important;
+  color: inherit !important;
+}
+
+
+/*
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  padding: 10px 10px 12px 10px;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: 1px;
+}
+
+*/
 .step-buttons .primary-button {
+  font-family: 'Ubuntu', sans-serif !important;
   padding: 6px 16px 6px 16px;
-  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  
   font-weight:550px;
   text-transform: none;
   font-size: 16px;
@@ -208,10 +305,24 @@ textarea {
   width: 48%;
   transition: background-color 0.3s ease;
 }
-
-.step-buttons .secondary-button {
+.primary-button {
+  font-family: 'Ubuntu', sans-serif !important;
   padding: 6px 16px 6px 16px;
-  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  font-weight:550px;
+  text-transform: none;
+  font-size: 16px;
+  background-color: #1A2238;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 48%;
+  transition: background-color 0.3s ease;
+}
+.secondary-button {
+  
+  padding: 6px 16px 6px 16px;
+  font-family: 'Ubuntu', sans-serif !important;
   font-weight:550px;
   text-transform: none;
   font-size: 16px;
@@ -225,12 +336,18 @@ textarea {
   transition: background-color 0.3s ease;
 }
 
-button {
-  padding: 15px 30px;
+
+.step-buttons .secondary-button {
+  
+  padding: 6px 16px 6px 16px;
+  font-family: 'Ubuntu', sans-serif !important;
+  font-weight:550px;
+  text-transform: none;
   font-size: 16px;
-  background-color: #9daaf2;
+  background-color: white;
   color: #1A2238;
-  border: none;
+  border-color:#1A2238;
+  border: solid 1px;
   border-radius: 5px;
   cursor: pointer;
   width: 48%;
@@ -238,10 +355,9 @@ button {
 }
 
 .error {
-  font-family: 'Ubuntu', Arial, Helvetica, sans-serif;
+  font-family: 'Ubuntu', sans-serif !important;
   color: red;
-  font-size: 12px;
-  margin-top: -10px;
+  
   margin-bottom: 10px;
 }
 
@@ -250,8 +366,12 @@ button {
   justify-content: space-between;
   margin-bottom: 30px;
 }
-
+a.signup-link{
+  color: #ff6a3d;
+  text-decoration: none;
+}
 .step {
+  
   width: 25%;
   text-align: center;
   font-weight: bold;
@@ -264,6 +384,7 @@ button {
 
 /* Progress bar style */
 .progress-bar {
+  
   height: 5px;
   background-color: #FF6A3d;
   margin-top: 15px;
@@ -280,6 +401,7 @@ button {
 
 
 .App {
+  
   display: flex;
   flex-direction: column;
 
@@ -287,16 +409,7 @@ button {
   padding-top: 20px;
 }
 
-/* General styling for input fields */
-.input-field {
-  font-size: 16px;
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid #ccc; /* Default border */
-  background-color: #fff; /* Default background */
-}
+
 
 /* Error styling */
 .input-field.error {
@@ -304,11 +417,160 @@ button {
   background-color: #fdd; /* Pale red background */
 }
 
-/* Optional: Style for error message */
-.error-message {
-  color: #f44336; /* Red text for the error message */
-  font-size: 14px;
-  margin-top: -8px;
-  margin-bottom: 10px;
+.login-container {
+  
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f4f7f8;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
+
+.login-container h2 {
+  
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-field {
+ 
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px 10px  10px 5px;
+}
+
+input {
+  
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input.error {
+  border-color: red;
+  background: #ffe6e6;
+}
+
+.error-message {
+  margin-top: -10px;
+  color: red;
+  font-size: 14px;
+}
+p.error-message{
+  font-weight: 200
+}
+#type-error-message{
+ padding-top: 5px !important;
+}
+
+.tlbr-button {
+  width: 100%;
+  background-color: #1A2238;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.primary-button {
+  
+  width: 100%;
+
+  background-color: #1A2238;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  
+  background-color: #1a2238e5;
+}
+
+.forgot-password {
+  
+  margin-top: 10px;
+}
+
+.forgot-password a {
+  
+  color: #ff6a3d;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  
+  text-decoration: underline;
+}
+.dashboard-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.dashboard-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 200px;
+}
+
+.stat-card h3 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.stat-card p {
+  font-size: 1rem;
+  color: gray;
+}
+
+.dashboard-buttons {
+  margin-top: 20px;
+}
+
+button {
+  
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.upgrade-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.manage-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.register-boiler {
+  background-color: #28a745;
+  color: white;
+}
+
 
