@@ -33,9 +33,8 @@ const BoilerDashboard = () => {
   const [loadingBoiler, setLoadingBoiler] = useState(true);
   const [error, setError] = useState("");
   
-  // Service history states
+  // Service history state
   const [serviceHistory, setServiceHistory] = useState([]);
-  const [loadingHistory, setLoadingHistory] = useState(true);
 
   // Linking functionality states
   const [isLinked, setIsLinked] = useState(false);
@@ -45,12 +44,11 @@ const BoilerDashboard = () => {
   // Dialog for unlink confirmation
   const [dialogOpen, setDialogOpen] = useState(false);
   
-  // New dialog state for subscription limit reached alert
+  // Dialog for subscription limit reached alert
   const [maxReachedDialogOpen, setMaxReachedDialogOpen] = useState(false);
 
   // State for user's linked boilers count from /getUserBoilers
   const [userBoilers, setUserBoilers] = useState([]);
-  const [loadingUserBoilers, setLoadingUserBoilers] = useState(true);
 
   // Determine max boilers based on subscription plan.
   // For PlanID 4, max = 3; for PlanID 5, max = 10.
@@ -107,8 +105,6 @@ const BoilerDashboard = () => {
           }
         } catch (err) {
           console.error("Error fetching service history:", err);
-        } finally {
-          setLoadingHistory(false);
         }
       };
       fetchServiceHistory();
@@ -133,8 +129,6 @@ const BoilerDashboard = () => {
         }
       } catch (error) {
         console.error("Error fetching user boilers:", error);
-      } finally {
-        setLoadingUserBoilers(false);
       }
     };
     if (user) {
@@ -212,7 +206,7 @@ const BoilerDashboard = () => {
     setDialogOpen(false);
   };
 
-  // Handler for subscription limit reached dialog actions.
+  // Handlers for subscription limit reached dialog actions.
   const handleUpgrade = () => {
     setMaxReachedDialogOpen(false);
     navigate("/upgrade");
@@ -229,7 +223,7 @@ const BoilerDashboard = () => {
       // If the boiler is already linked, show confirmation to unlink.
       setDialogOpen(true);
     } else {
-      // Linking attempt – check if the user has reached the subscription limit.
+      // For linking, check if the user has reached their subscription limit.
       if (userBoilers.length >= maxBoilers) {
         setMaxReachedDialogOpen(true);
       } else {
@@ -241,7 +235,7 @@ const BoilerDashboard = () => {
   if (loadingBoiler) return <div>Loading boiler details...</div>;
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
-  // Compute values for visualisations.
+  // Compute values for visualizations.
   const daysUntilService = computeDaysUntilService();
   const gaugeMax = 365;
   const gaugeValue = daysUntilService > gaugeMax ? gaugeMax : daysUntilService;
@@ -353,9 +347,9 @@ const BoilerDashboard = () => {
                       size="small"
                       sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
                       onClick={() => {
-                        if(record.Description === "Routine Service"){
+                        if (record.Description === "Routine Service") {
                           navigate(`/routineServiceDetails/${record.RecordID}`);
-                        } else if(record.Description === "Maintenance Activity"){
+                        } else if (record.Description === "Maintenance Activity") {
                           navigate(`/maintenanceLogDetails/${record.RecordID}`);
                         } else {
                           console.log("Unknown service type for record:", record.RecordID);

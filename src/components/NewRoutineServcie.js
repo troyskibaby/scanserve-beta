@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import CommentIcon from '@mui/icons-material/Comment';
 import { AuthContext } from "./AuthContext";
-import config from "../config";
+
 
 const NewRoutineService = () => {
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ const NewRoutineService = () => {
   // Multi-step navigation
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
+
   // State to control the Cancel confirmation modal
   const [openCancelModal, setOpenCancelModal] = useState(false);
 

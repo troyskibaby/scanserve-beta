@@ -14,8 +14,7 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
-  Typography
+  MenuItem
 } from "@mui/material";
 import config from "../config";
 import { AuthContext } from "./AuthContext";

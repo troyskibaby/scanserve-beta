@@ -56,7 +56,7 @@ const VerifyEmail = () => {
     };
 
     verifyEmail();
-  }, []); // ✅ Empty dependency array to ensure it runs only on mount
+  }, [location.search, navigate]); // ✅ Empty dependency array to ensure it runs only on mount
 
   return (
     <div className="verification-container">

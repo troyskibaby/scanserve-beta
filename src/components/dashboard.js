@@ -13,11 +13,10 @@ import {
   Paper, 
   Button,
   Box,
-  Alert,
-  ButtonGroup
+  Alert
 } from "@mui/material";
 import { Gauge, gaugeClasses } from '@mui/x-charts';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+
 import 'react-circular-progressbar/dist/styles.css';
 
 const Dashboard = () => {
@@ -88,31 +87,9 @@ const Dashboard = () => {
     );
   }
 
-  // Helper function to format date strings
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const options = {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    };
-    return new Date(dateString).toLocaleString("en-GB", options).replace(/,/g, "");
-  };
 
-  // Visualisation for next service due days is computed using one boiler's NextServiceDueDate.
-  // (For simplicity, we assume all boilers have similar service schedules.)
-  const computeDaysUntilService = () => {
-    if (!boilers.length || !boilers[0].NextServiceDueDate) return 0;
-    const now = new Date();
-    const nextService = new Date(boilers[0].NextServiceDueDate);
-    const diffTime = nextService - now;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays : 0;
-  };
 
+  
   // Count how many boilers have their NextServiceDueDate within the next 14 days
   const countBoilersDueSoon = () => {
     if (!boilers || boilers.length === 0) return 0;
@@ -125,9 +102,8 @@ const Dashboard = () => {
     }).length;
   };
 
-  const daysUntilService = computeDaysUntilService();
-  const gaugeMax = 365; // gauge scale for days until service
-  const gaugeValue = daysUntilService > gaugeMax ? gaugeMax : daysUntilService;
+
+
   const dueSoonCount = countBoilersDueSoon();
   const displayedBoilers = boilers.slice(0, 5);
 

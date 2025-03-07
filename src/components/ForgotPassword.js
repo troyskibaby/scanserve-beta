@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import config from '../config'; 
 
 const ForgotPassword = () => {
@@ -7,7 +7,7 @@ const ForgotPassword = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+  
 
   const API_URL =
     `${config.apiUrl}/requestPasswordReset?code=${config.key}`; // Update with actual URL

@@ -11,16 +11,13 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
-  Divider,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import CommentIcon from '@mui/icons-material/Comment';
 import { AuthContext } from "./AuthContext";
-import config from "../config";
+
 
 const NewMaintenanceLog = () => {
   const navigate = useNavigate();
@@ -46,7 +43,7 @@ const NewMaintenanceLog = () => {
   });
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [errors, setErrors] = useState({});
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 

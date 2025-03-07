@@ -1,5 +1,5 @@
 // RoutineServiceDetails.js
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Tabs,
@@ -17,7 +17,7 @@ import {
   Typography
 } from "@mui/material";
 import CommentIcon from "@mui/icons-material/Comment";
-import { AuthContext } from "./AuthContext";
+
 import config from "../config";
 
 // Helper component for Tab Panels
@@ -39,7 +39,7 @@ function TabPanel(props) {
 const RoutineServiceDetails = () => {
   const { recordID } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+
 
   const [serviceDetails, setServiceDetails] = useState(null);
   const [loading, setLoading] = useState(true);
