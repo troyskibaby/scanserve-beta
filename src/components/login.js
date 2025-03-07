@@ -40,9 +40,15 @@ const Login = () => {
       }
 
       console.log("Login successful. Token set in cookie.");
-      // Update the authentication context from the cookie.
+      
+      // If the API returns a token in the response, store it in localStorage.
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+      
+      // Update the authentication context from the stored token.
       await loadUserFromToken();
-      // Do not immediately navigate here; let the useEffect trigger navigation when user state is updated.
+      // Navigation to /dashboard will occur via the useEffect when user state is updated.
     } catch (error) {
       console.error("Login error:", error);
       setError(error.message);
@@ -50,7 +56,7 @@ const Login = () => {
     setLoading(false);
   };
 
-  // Debugging: log user state changes.
+  // Debug: log user state changes; navigate when user is set.
   useEffect(() => {
     console.log("User state changed:", user);
     if (user) {

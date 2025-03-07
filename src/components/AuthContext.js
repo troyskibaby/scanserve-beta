@@ -1,6 +1,6 @@
 // AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
@@ -10,12 +10,17 @@ export const AuthProvider = ({ children }) => {
   const [loadingAuth, setLoadingAuth] = useState(true);
 
   const loadUserFromToken = () => {
-    // Log the entire document.cookie to see all cookies available
     console.log("document.cookie:", document.cookie);
 
-    // Retrieve the token using js-cookie
-    const token = Cookies.get("token");
-    console.log("Token retrieved from cookie:", token);
+    // Attempt to retrieve the token from cookies.
+    let token = Cookies.get("token");
+    if (!token) {
+      // If not found in cookies, try localStorage.
+      token = localStorage.getItem("token");
+      console.log("Token retrieved from localStorage:", token);
+    } else {
+      console.log("Token retrieved from cookie:", token);
+    }
 
     if (token) {
       try {
@@ -27,6 +32,7 @@ export const AuthProvider = ({ children }) => {
           console.log("Token is expired.");
           setUser(null);
           Cookies.remove("token");
+          localStorage.removeItem("token");
         } else {
           console.log("Token is valid. Setting user.");
           setUser(decoded);
