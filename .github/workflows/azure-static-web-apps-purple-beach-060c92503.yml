@@ -21,6 +21,9 @@ jobs:
           lfs: false
       - name: Set Node version for Oryx build
         run: echo "ORYX_NODE_DEFAULT_VERSION=20.x" >> $GITHUB_ENV
+      - name: Set NODE_OPTIONS for legacy OpenSSL
+        run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
