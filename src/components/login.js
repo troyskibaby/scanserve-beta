@@ -1,9 +1,8 @@
 // login.js
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import config from '../config';
+import config from "../config";
 import { AuthContext } from "./AuthContext";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +13,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const API_URL = `${config.apiUrl}/loginUser?code=${config.key}`;
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,22 +40,18 @@ const Login = () => {
       }
 
       console.log("Login successful. Token set in cookie.");
+      
       // Update the authentication context from the cookie.
-      loadUserFromToken();
-      // Do not immediately navigate—let the useEffect below handle it.
+      await loadUserFromToken();
+      
+      // Navigate immediately to dashboard.
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       setError(error.message);
     }
     setLoading(false);
   };
-
-  // Monitor the user state; once it becomes non-null, navigate to /dashboard.
-  useEffect(() => {
-    if (user) {
-      navigate("/dashboard");
-    }
-  }, [user, navigate]);
 
   return (
     <div className="login-container">
@@ -95,7 +89,6 @@ const Login = () => {
         <p className="forgot-password">
           Don't have an account? <a href="/signup">Signup</a>
         </p>
-
       </form>
     </div>
   );
