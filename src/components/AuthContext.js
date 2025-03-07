@@ -1,6 +1,6 @@
 // AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
-import * as jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode"; // Changed to default import
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
     if (token) {
       try {
+        // Using jwtDecode as a default import.
         const decoded = jwtDecode(token);
         console.log("Decoded token:", decoded);
 
