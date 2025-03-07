@@ -1,5 +1,5 @@
 // login.js
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
 import { AuthContext } from "./AuthContext";
@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const { user, loadUserFromToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -40,10 +41,8 @@ const Login = () => {
       }
 
       console.log("Login successful. Token set in cookie.");
-      
       // Update the authentication context from the cookie.
       await loadUserFromToken();
-      
       // Navigate immediately to dashboard.
       navigate("/dashboard");
     } catch (error) {
@@ -52,6 +51,13 @@ const Login = () => {
     }
     setLoading(false);
   };
+
+  // Monitor the user state; once it becomes non-null, navigate to /dashboard.
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="login-container">
