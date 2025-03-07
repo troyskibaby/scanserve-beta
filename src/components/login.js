@@ -9,7 +9,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const { user, loadUserFromToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -43,8 +42,7 @@ const Login = () => {
       console.log("Login successful. Token set in cookie.");
       // Update the authentication context from the cookie.
       await loadUserFromToken();
-      // Navigate immediately to dashboard.
-      navigate("/dashboard");
+      // Do not immediately navigate here; let the useEffect trigger navigation when user state is updated.
     } catch (error) {
       console.error("Login error:", error);
       setError(error.message);
@@ -52,8 +50,9 @@ const Login = () => {
     setLoading(false);
   };
 
-  // Monitor the user state; once it becomes non-null, navigate to /dashboard.
+  // Debugging: log user state changes.
   useEffect(() => {
+    console.log("User state changed:", user);
     if (user) {
       navigate("/dashboard");
     }
