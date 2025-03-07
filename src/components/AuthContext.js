@@ -1,6 +1,6 @@
 // AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
-import * as jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
@@ -12,23 +12,23 @@ export const AuthProvider = ({ children }) => {
   const loadUserFromToken = () => {
     console.log("document.cookie:", document.cookie);
 
-    // Attempt to retrieve the token from cookies.
-    let token = Cookies.get("token");
-    if (!token) {
-      // If not found in cookies, try localStorage.
-      token = localStorage.getItem("token");
+    // Try to get the token from localStorage first.
+    let token = localStorage.getItem("token");
+    if (token) {
       console.log("Token retrieved from localStorage:", token);
     } else {
-      console.log("Token retrieved from cookie:", token);
+      token = Cookies.get("token");
+      if (token) {
+        console.log("Token retrieved from cookie:", token);
+      }
     }
 
     if (token) {
       try {
-        // Try using jwtDecode as a function directly.
-        const decoded = jwtDecode(token); // or jwtDecode.default(token) if needed
+        const decoded = jwtDecode(token);
         console.log("Decoded token:", decoded);
 
-        // Check if the token is expired (decoded.exp is in seconds)
+        // Check if the token is expired (decoded.exp is in seconds).
         if (decoded.exp * 1000 < Date.now()) {
           console.log("Token is expired.");
           setUser(null);
