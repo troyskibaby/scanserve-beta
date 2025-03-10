@@ -37,10 +37,17 @@ const AllBoilers = () => {
     const fetchUserBoilers = async () => {
       try {
         const API_URL = `${config.apiUrl}/getUserBoilers?code=${config.key}`;
+        // Retrieve token from localStorage (if available)
+        const token = localStorage.getItem("token");
+        const headers = { "Content-Type": "application/json" };
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(API_URL, {
           method: "GET",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" }
+          credentials: "include", // Ensures the token cookie is sent as well
+          headers: headers
         });
         const data = await response.json();
         if (!response.ok) {
