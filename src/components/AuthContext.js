@@ -1,6 +1,5 @@
 // AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
-import * as jwtDecode from "jwt-decode"; // Import as namespace
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
@@ -25,8 +24,9 @@ export const AuthProvider = ({ children }) => {
 
     if (token) {
       try {
-        // Call the default function from the namespace import.
-        const decoded = jwtDecode.default(token);
+        // Dynamically require jwt-decode to avoid static import issues.
+        const jwtDecode = require("jwt-decode");
+        const decoded = jwtDecode(token);
         console.log("Decoded token:", decoded);
 
         // Check if the token is expired (decoded.exp is in seconds).
