@@ -183,10 +183,12 @@ const BoilerDashboard = () => {
     setLinkError("");
     setLinking(true);
     const endpoint = isLinked ? "/unlinkBoiler" : "/linkBoiler";
+    // Append the code query parameter to the endpoint.
+    const url = `${config.apiUrl}${endpoint}?code=${config.key}`;
     const payload = { boilerID: boiler.BoilerID };
 
     try {
-      const response = await fetch(`${config.apiUrl}${endpoint}`, {
+      const response = await fetch(url, {
         method: "POST",
         credentials: "include",
         headers: getAuthHeaders(),
