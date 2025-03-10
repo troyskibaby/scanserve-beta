@@ -25,10 +25,10 @@ const BoilerLinkConfirmation = () => {
   }
 
   const handleLinkYes = async () => {
-    // Check if the user is signed in by checking for the "token" cookie.
-    const token = Cookies.get('token');
+    // Check if the user is signed in by checking for the token in cookies or localStorage.
+    const token = Cookies.get('token') || localStorage.getItem('token');
     if (!token) {
-      setMessage("You need to create an account to link your boiler. Please");
+      setMessage("You need to create an account to link your boiler. Please sign up or log in.");
       setLinking(false);
       return;
     }
@@ -37,7 +37,7 @@ const BoilerLinkConfirmation = () => {
     setMessage('');
     try {
       const API_URL = `${config.apiUrl}/linkBoiler?code=${config.key}`;
-      // The API should extract the UserID from the "token" cookie.
+      // The API should extract the UserID from the token provided in cookies or header.
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,20 +74,22 @@ const BoilerLinkConfirmation = () => {
       <p>Your boiler has been registered successfully.</p>
       <p><b>Would you like to link this boiler to your account?</b></p>
       <div className="step-buttons">
-      <button onClick={handleLinkNo} disabled={linking} className="secondary-button" style={{ marginLeft: '10px' }}>
+        <button onClick={handleLinkNo} disabled={linking} className="secondary-button" style={{ marginLeft: '10px' }}>
           No
         </button>
         <button onClick={handleLinkYes} disabled={linking} className="primary-button">
           {linking ? 'Linking boiler...' : 'Yes'}
         </button>
-        
       </div>
       {message && (
         <p style={{ marginTop: '10px' }}>
           {message}
-          {/* If no token exists, render a Sign Up link */}
-          {!Cookies.get('token') && (
-            <span> <Link to="/signup" state={{ boilerID }}>Sign Up</Link> or <Link to="/login" state={{ boilerID }}>Login</Link>.</span>
+          {/* If no token exists, render Sign Up or Login links */}
+          {!(Cookies.get('token') || localStorage.getItem('token')) && (
+            <span>
+              {" "}
+              <Link to="/signup" state={{ boilerID }}>Sign Up</Link> or <Link to="/login" state={{ boilerID }}>Login</Link>.
+            </span>
           )}
         </p>
       )}
