@@ -1,4 +1,4 @@
-// AuthContext.js
+// AuthContext.js (updated dynamic require)
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
@@ -24,8 +24,9 @@ export const AuthProvider = ({ children }) => {
 
     if (token) {
       try {
-        // Dynamically require jwt-decode to avoid static import issues.
-        const jwtDecode = require("jwt-decode");
+        // Dynamically require jwt-decode and check for default export.
+        const jwtDecodeModule = require("jwt-decode");
+        const jwtDecode = jwtDecodeModule.default || jwtDecodeModule;
         const decoded = jwtDecode(token);
         console.log("Decoded token:", decoded);
 
