@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Stepper,
@@ -19,10 +19,9 @@ import {
   DialogContent,
   DialogActions
 } from "@mui/material";
-import config from "../config";
 import CommentIcon from '@mui/icons-material/Comment';
 import { AuthContext } from "./AuthContext";
-
+import config from "../config";
 
 const NewRoutineService = () => {
   const navigate = useNavigate();
@@ -75,16 +74,29 @@ const NewRoutineService = () => {
   const [nextServiceDueDate, setNextServiceDueDate] = useState(defaultDueDateStr);
 
   // Form state for Part 3: User Details
+  // Initialize with empty strings and update once 'user' is loaded.
   const [details, setDetails] = useState({
-    firstName: user ? user.FirstName : "",
-    lastName: user ? user.LastName : "",
-    email: user ? user.Email : "",
-    phone: user ? user.Phone : "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     showDetails: false,
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  // When the user object becomes available, update the details state.
+  useEffect(() => {
+    if (user) {
+      setDetails({
+        firstName: user.FirstName || "",
+        lastName: user.LastName || "",
+        email: user.Email || "",
+        phone: user.Phone || "",
+        showDetails: false,
+      });
+    }
+  }, [user]);
 
+  const [submitted, setSubmitted] = useState(false);
   // Also capture qrCode from navigation state if available
   const qrCode = (location.state && location.state.qrCode) || "";
 
@@ -158,7 +170,6 @@ const NewRoutineService = () => {
     }
     setIsSubmitting(false);
   };
-  
 
   const handleCancelYes = () => {
     resetForm();
@@ -287,7 +298,6 @@ const NewRoutineService = () => {
             <Box sx={{ display: "flex", gap: 2 }}>
               <TextField
                 label="First Name"
-                multiline
                 fullWidth
                 size="small"
                 margin="normal"
@@ -296,7 +306,6 @@ const NewRoutineService = () => {
               />
               <TextField
                 label="Last Name"
-                multiline
                 fullWidth
                 size="small"
                 margin="normal"
@@ -306,7 +315,6 @@ const NewRoutineService = () => {
             </Box>
             <TextField
               label="Email"
-              multiline
               fullWidth
               size="small"
               margin="normal"
@@ -315,7 +323,6 @@ const NewRoutineService = () => {
             />
             <TextField
               label="Phone"
-              multiline
               fullWidth
               size="small"
               margin="normal"
@@ -341,42 +348,40 @@ const NewRoutineService = () => {
         return <div>Unknown Step</div>;
     }
   };
-    if (submitted) {
-      return (
-        <Box sx={{ padding: "20px" }}>
-          <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "#fff" }} elevation={3}>
-            <h2>Routine service logged! 🎉</h2>
-            <Box sx={{ mt: 3, display: "flex", justifyContent: "center", gap: 2 }}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#1A2238",
-                  color: "#fff",
-                  "&:hover": { backgroundColor: "#1A2238" },
-                }}
-                onClick={() => navigate(`/boilerDashboard/${qrCode}`)}
-              >
-                Back to Boiler Dashboard
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "#1A2238",
-                  color: "#1A2238",
-                  "&:hover": {
-                    borderColor: "#1A2238",
-                    backgroundColor: "rgba(26,34,56,0.1)",
-                  },
-                }}
-                onClick={() => navigate("/dashboard")}
-              >
-                Go to Dashboard
-              </Button>
-            </Box>
-          </Paper>
-        </Box>
-      );
-    }
+
+  if (submitted) {
+    return (
+      <Box sx={{ padding: "20px" }}>
+        <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "#fff" }} elevation={3}>
+          <h2>Routine service logged! 🎉</h2>
+          <Box sx={{ mt: 3, display: "flex", justifyContent: "center", gap: 2 }}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#1A2238",
+                color: "#fff",
+                "&:hover": { backgroundColor: "#1A2238" },
+              }}
+              onClick={() => navigate(`/boilerDashboard/${qrCode}`)}
+            >
+              Back to Boiler Dashboard
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: "#1A2238",
+                color: "#1A2238",
+                "&:hover": { borderColor: "#1A2238", backgroundColor: "rgba(26,34,56,0.1)" },
+              }}
+              onClick={() => navigate("/dashboard")}
+            >
+              Go to Dashboard
+            </Button>
+          </Box>
+        </Paper>
+      </Box>
+    );
+  }
 
   return (
     <div className="step-container" style={{ padding: "20px" }}>
@@ -399,31 +404,25 @@ const NewRoutineService = () => {
               sx={{
                 borderColor: "#1A2238",
                 color: "#1A2238",
-                "&:hover": {
-                  borderColor: "#1A2238",
-                  backgroundColor: "rgba(26,34,56,0.1)",
-                },
+                "&:hover": { borderColor: "#1A2238", backgroundColor: "rgba(26,34,56,0.1)" },
               }}
             >
               Back
             </Button>
           )}
           <Box sx={{ display: "flex", gap: 2 }}>
-          <Button
-  variant="text"
-  onClick={() => setOpenCancelModal(true)}
-  sx={{
-    textDecoration: "underline",
-    color: "#1A2238",
-    backgroundColor: "transparent",
-    "&:hover": {
-      backgroundColor: "transparent",
-    },
-  }}
->
-  Cancel
-</Button>
-
+            <Button
+              variant="text"
+              onClick={() => setOpenCancelModal(true)}
+              sx={{
+                textDecoration: "underline",
+                color: "#1A2238",
+                backgroundColor: "transparent",
+                "&:hover": { backgroundColor: "transparent" },
+              }}
+            >
+              Cancel
+            </Button>
             {currentStep < steps.length - 1 ? (
               <Button
                 variant="contained"
@@ -478,10 +477,7 @@ const NewRoutineService = () => {
             sx={{
               borderColor: "#1A2238",
               color: "#1A2238",
-              "&:hover": {
-                borderColor: "#1A2238",
-                backgroundColor: "rgba(26,34,56,0.1)",
-              },
+              "&:hover": { borderColor: "#1A2238", backgroundColor: "rgba(26,34,56,0.1)" },
             }}
           >
             No

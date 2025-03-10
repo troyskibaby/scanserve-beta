@@ -1,5 +1,5 @@
 // NewMaintenanceLog.js
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Stepper,
@@ -19,7 +19,6 @@ import {
 import { AuthContext } from "./AuthContext";
 import config from "../config";
 
-
 const NewMaintenanceLog = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,27 +27,37 @@ const NewMaintenanceLog = () => {
   // Define steps for the Stepper
   const steps = ["Activity Description", "Activity Date", "Your Details"];
 
-  // Form data state
+  // Form data state with initial values. (User details will be updated via useEffect.)
   const [formData, setFormData] = useState({
     activityDescription: "",
     workshopDescription: "",
     partsReplaced: "", // "Yes" or "No"
     replacedPartsDescription: "",
     activityDate: "",
-    firstName: user ? user.FirstName : "",
-    lastName: user ? user.LastName : "",
-    email: user ? user.Email : "",
-    phone: user ? user.Phone : "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     showDetails: false,
     qrCode: (location.state && location.state.qrCode) || "",
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  // Update formData with user details when user changes.
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        firstName: user.FirstName || "",
+        lastName: user.LastName || "",
+        email: user.Email || "",
+        phone: user.Phone || "",
+      }));
+    }
+  }, [user]);
 
+  const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  // Cancel Modal State
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   const nextStep = () => {
@@ -67,16 +76,22 @@ const NewMaintenanceLog = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const API_URL = `${config.apiUrl}/newMaintenanceActivity?code=${config.key}`;
-          
-
+      // Define a code constant that falls back to an env variable if config.key is undefined.
+      const code = config.key || process.env.REACT_APP_API_CODE;
+      const API_URL = `${config.apiUrl}/newMaintenanceActivity?code=${code}`;
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
+      // Try to parse JSON response. (If unauthorized the API may return an empty body.)
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (e) {
+        // If no JSON, leave data empty.
+      }
       if (!response.ok) {
         throw new Error(data.message || "Submission failed.");
       }
@@ -89,9 +104,8 @@ const NewMaintenanceLog = () => {
     setIsSubmitting(false);
   };
 
-  // Cancel modal handlers (defined inside so they have access to state)
+  // Cancel modal handlers
   const handleCancelYes = () => {
-    // Reset form state if desired (here we simply navigate away)
     setOpenCancelModal(false);
     navigate(`/boilerDashboard/${formData.qrCode}`);
   };
@@ -113,10 +127,7 @@ const NewMaintenanceLog = () => {
               margin="normal"
               value={formData.workshopDescription}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  workshopDescription: e.target.value,
-                })
+                setFormData({ ...formData, workshopDescription: e.target.value })
               }
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -137,14 +148,10 @@ const NewMaintenanceLog = () => {
                 sx={{
                   mr: 1,
                   borderColor: "#1A2238",
-                  backgroundColor:
-                    formData.partsReplaced === "Yes" ? "#FF6A3d" : undefined,
+                  backgroundColor: formData.partsReplaced === "Yes" ? "#FF6A3d" : undefined,
                   color: formData.partsReplaced === "Yes" ? "#fff" : "#1A2238",
                   "&:hover": {
-                    backgroundColor:
-                      formData.partsReplaced === "Yes"
-                        ? "#FF6A3d"
-                        : "rgba(26,34,56,0.1)",
+                    backgroundColor: formData.partsReplaced === "Yes" ? "#FF6A3d" : "rgba(26,34,56,0.1)",
                   },
                 }}
                 onClick={() =>
@@ -157,14 +164,10 @@ const NewMaintenanceLog = () => {
                 variant={formData.partsReplaced === "No" ? "contained" : "outlined"}
                 sx={{
                   borderColor: "#1A2238",
-                  backgroundColor:
-                    formData.partsReplaced === "No" ? "#FF6A3d" : undefined,
+                  backgroundColor: formData.partsReplaced === "No" ? "#FF6A3d" : undefined,
                   color: formData.partsReplaced === "No" ? "#fff" : "#1A2238",
                   "&:hover": {
-                    backgroundColor:
-                      formData.partsReplaced === "No"
-                        ? "#FF6A3d"
-                        : "rgba(26,34,56,0.1)",
+                    backgroundColor: formData.partsReplaced === "No" ? "#FF6A3d" : "rgba(26,34,56,0.1)",
                   },
                 }}
                 onClick={() =>
@@ -182,10 +185,7 @@ const NewMaintenanceLog = () => {
                 margin="normal"
                 value={formData.replacedPartsDescription}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    replacedPartsDescription: e.target.value,
-                  })
+                  setFormData({ ...formData, replacedPartsDescription: e.target.value })
                 }
                 sx={{
                   "& .MuiOutlinedInput-root": {
@@ -423,10 +423,7 @@ const NewMaintenanceLog = () => {
             ) : (
               <Button
                 variant="contained"
-                onClick={() => {
-                  handleSubmit();
-                  setSubmitted(true);
-                }}
+                onClick={handleSubmit}
                 disabled={isSubmitting}
                 sx={{
                   backgroundColor: "#1A2238",
