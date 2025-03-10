@@ -37,10 +37,16 @@ const BoilerLinkConfirmation = () => {
     setMessage('');
     try {
       const API_URL = `${config.apiUrl}/linkBoiler?code=${config.key}`;
-      // The API should extract the UserID from the token provided in cookies or header.
+      // Prepare headers including the Authorization header.
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+
+      // The API will extract the UserID from the token provided via the Authorization header.
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         credentials: 'include',
         body: JSON.stringify({ boilerID })
       });
