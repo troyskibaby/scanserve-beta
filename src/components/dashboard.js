@@ -16,7 +16,7 @@ import {
   Box,
   Alert
 } from "@mui/material";
-import { Gauge, gaugeClasses } from '@x-charts/gauge'; // adjust import if needed
+import { Gauge, gaugeClasses } from '@mui/x-charts';
 
 import 'react-circular-progressbar/dist/styles.css';
 
