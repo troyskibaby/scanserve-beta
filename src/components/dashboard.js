@@ -150,22 +150,28 @@ const Dashboard = () => {
       </Box>
 
       {/* New button row: Register Boiler (left) and View all boilers (right) */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-        <Button 
-          variant="contained" 
-          sx={{ textDecoration: "underline", color: "#1A2238" }}
-          onClick={() => navigate("/registerBoiler")}
-        >
-          Register Boiler
-        </Button>
-        <Button 
-          variant="text" 
-          sx={{ textDecoration: "underline", color: "#1A2238" }}
-          onClick={() => navigate("/allBoilers")}
-        >
-          View all boilers
-        </Button>
-      </Box>
+      {/* New button row: Register Boiler (left) and View all boilers (right) */}
+<Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+  <Button 
+    variant="contained" 
+    sx={{ 
+      backgroundColor: "#1A2238", 
+      color: "#fff", 
+      "&:hover": { backgroundColor: "#1A2238" } 
+    }}
+    onClick={() => navigate("/registerBoiler")}
+  >
+    Register Boiler
+  </Button>
+  <Button 
+    variant="text" 
+    sx={{ textDecoration: "underline", color: "#1A2238" }}
+    onClick={() => navigate("/allBoilers")}
+  >
+    View all boilers
+  </Button>
+</Box>
+
 
       {loadingBoilers ? (
         <p>Loading boilers...</p>
