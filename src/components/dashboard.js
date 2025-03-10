@@ -1,3 +1,4 @@
+// Dashboard.js
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +16,7 @@ import {
   Box,
   Alert
 } from "@mui/material";
-import { Gauge, gaugeClasses } from '@mui/x-charts';
+import { Gauge, gaugeClasses } from '@x-charts/gauge'; // adjust import if needed
 
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -43,10 +44,22 @@ const Dashboard = () => {
     const fetchUserBoilers = async () => {
       try {
         const API_URL = `${config.apiUrl}/getUserBoilers?code=${config.key}`;
+
+        // Retrieve token from localStorage as a fallback.
+        const token = localStorage.getItem("token");
+
+        // Set up headers. Including the token in Authorization header.
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(API_URL, {
           method: "GET",
-          credentials: "include", // Ensure the token cookie is sent.
-          headers: { "Content-Type": "application/json" }
+          credentials: "include", // still include credentials
+          headers: headers,
         });
         const data = await response.json();
         if (!response.ok) {
@@ -87,9 +100,6 @@ const Dashboard = () => {
     );
   }
 
-
-
-  
   // Count how many boilers have their NextServiceDueDate within the next 14 days
   const countBoilersDueSoon = () => {
     if (!boilers || boilers.length === 0) return 0;
@@ -102,11 +112,8 @@ const Dashboard = () => {
     }).length;
   };
 
-
-
   const dueSoonCount = countBoilersDueSoon();
   const displayedBoilers = boilers.slice(0, 5);
-
 
   if (loadingBoilers) return <div>Loading boilers...</div>;
   if (!user) return <div>Redirecting...</div>;
@@ -120,7 +127,6 @@ const Dashboard = () => {
       {/* Visualisation Section */}
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 4, my: 2 }}>
         {/* Gauge: Number of Linked Boilers */}
-        <div>
         <Box sx={{ width: 100, height: 100 }}>
           <Gauge 
             value={linkedCount}
@@ -135,19 +141,15 @@ const Dashboard = () => {
             })}
             aria-label="Boilers Linked Gauge"
           />
-        
         </Box>
-        </div>
         {/* Infographic: Boilers with Service Due in Next 14 Days */}
         <Box sx={{ p: 2, backgroundColor: "#1A2238", color: "#fff", borderRadius: 2, minWidth: 150, textAlign: "center" }}>
-        <div style={{ fontSize: "2rem" }}>{dueSoonCount}</div>
-        <div >Boilers with a service due in the next 14 days</div>
+          <div style={{ fontSize: "2rem" }}>{dueSoonCount}</div>
+          <div>Boilers with a service due in the next 14 days</div>
         </Box>
       </Box>
 
-      <br></br>
-       {/* Button to view all boilers (aligned right) */}
-       <Box sx={{ textAlign: "right", mb: 1 }}>
+      <Box sx={{ textAlign: "right", mb: 1 }}>
         <Button 
           variant="text" 
           sx={{ textDecoration: "underline", color: "#1A2238" }}
