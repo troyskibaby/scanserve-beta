@@ -1,4 +1,4 @@
-// AuthContext.js (updated dynamic require)
+// AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
-  const loadUserFromToken = () => {
+  const loadUserFromToken = async () => {
     console.log("document.cookie:", document.cookie);
 
     // Try to get the token from localStorage first.
@@ -24,13 +24,18 @@ export const AuthProvider = ({ children }) => {
 
     if (token) {
       try {
-        // Dynamically require jwt-decode and check for default export.
-        const jwtDecodeModule = require("jwt-decode");
-        const jwtDecode = jwtDecodeModule.default || jwtDecodeModule;
+        // Dynamically import jwt-decode to ensure we get the default export.
+        const jwtDecodeModule = await import("jwt-decode");
+        const jwtDecode = jwtDecodeModule.default; // using dynamic import default export
+
+        if (typeof jwtDecode !== "function") {
+          throw new Error("jwtDecode is not a function");
+        }
+
         const decoded = jwtDecode(token);
         console.log("Decoded token:", decoded);
 
-        // Check if the token is expired (decoded.exp is in seconds).
+        // Check if the token is expired (decoded.exp is in seconds)
         if (decoded.exp * 1000 < Date.now()) {
           console.log("Token is expired.");
           setUser(null);
@@ -52,6 +57,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // Call our async function
     loadUserFromToken();
   }, []);
 
