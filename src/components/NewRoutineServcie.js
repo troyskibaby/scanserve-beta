@@ -138,7 +138,7 @@ const NewRoutineService = () => {
       showDetails: details.showDetails,
     };
     try {
-      const API_URL = `${process.env.REACT_APP_API_URL}/newRoutineService?code=${process.env.REACT_APP_API_CODE}`;
+      const API_URL = `${config.apiUrl}/newRoutineService?code=${config.key}`;
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
