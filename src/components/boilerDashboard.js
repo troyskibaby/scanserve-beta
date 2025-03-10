@@ -1,3 +1,4 @@
+// BoilerDashboard.js
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { 
@@ -35,7 +36,7 @@ const BoilerDashboard = () => {
   
   // Service history state
   const [serviceHistory, setServiceHistory] = useState([]);
-
+  
   // Linking functionality states
   const [isLinked, setIsLinked] = useState(false);
   const [linking, setLinking] = useState(false);
@@ -46,14 +47,24 @@ const BoilerDashboard = () => {
   
   // Dialog for subscription limit reached alert
   const [maxReachedDialogOpen, setMaxReachedDialogOpen] = useState(false);
-
+  
   // State for user's linked boilers count from /getUserBoilers
   const [userBoilers, setUserBoilers] = useState([]);
-
+  
   // Determine max boilers based on subscription plan.
   // For PlanID 4, max = 3; for PlanID 5, max = 10.
   const maxBoilers = user && user.PlanID === 4 ? 3 : user && user.PlanID === 5 ? 10 : 0;
   
+  // Helper to get authorization headers.
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    return headers;
+  };
+
   // Fetch boiler details (includes isLinked flag now)
   useEffect(() => {
     if (qrCode) {
@@ -63,7 +74,7 @@ const BoilerDashboard = () => {
           const response = await fetch(API_URL, {
             method: "GET",
             credentials: "include",
-            headers: { "Content-Type": "application/json" }
+            headers: getAuthHeaders()
           });
           const data = await response.json();
           if (!response.ok) {
@@ -95,7 +106,7 @@ const BoilerDashboard = () => {
           const response = await fetch(API_URL, {
             method: "GET",
             credentials: "include",
-            headers: { "Content-Type": "application/json" }
+            headers: getAuthHeaders()
           });
           const data = await response.json();
           if (!response.ok) {
@@ -119,7 +130,7 @@ const BoilerDashboard = () => {
         const response = await fetch(API_URL, {
           method: "GET",
           credentials: "include",
-          headers: { "Content-Type": "application/json" }
+          headers: getAuthHeaders()
         });
         const data = await response.json();
         if (response.ok) {
@@ -178,7 +189,7 @@ const BoilerDashboard = () => {
       const response = await fetch(`${config.apiUrl}${endpoint}`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       const data = await response.json();
@@ -315,7 +326,6 @@ const BoilerDashboard = () => {
         </ButtonGroup>
       </div>
 
-      {/* Service History Section */}
       <h3>Service Activity</h3>
       <Box sx={{ textAlign: "right", mb: 1 }}>
         <Button
