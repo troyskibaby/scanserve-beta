@@ -42,6 +42,7 @@ const App = () => {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/registerBoiler/:qrCode" element={<RegisterBoiler/>} />
+            <Route path="/registerBoiler" element={<RegisterBoiler/>} />
             <Route path="/registration-result" element={<RegistrationResult />} />
             <Route path="/boiler-link-confirmation" element={<BoilerLinkConfirmation />} />
             <Route path="/boilerDashboard/:qrCode" element={<BoilerDashboard />} />
