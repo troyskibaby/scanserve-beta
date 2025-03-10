@@ -19,6 +19,7 @@ import {
   DialogContent,
   DialogActions
 } from "@mui/material";
+import config from "../config";
 import CommentIcon from '@mui/icons-material/Comment';
 import { AuthContext } from "./AuthContext";
 
