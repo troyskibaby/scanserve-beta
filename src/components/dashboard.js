@@ -149,7 +149,15 @@ const Dashboard = () => {
         </Box>
       </Box>
 
-      <Box sx={{ textAlign: "right", mb: 1 }}>
+      {/* New button row: Register Boiler (left) and View all boilers (right) */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+        <Button 
+          variant="contained" 
+          sx={{ textDecoration: "underline", color: "#1A2238" }}
+          onClick={() => navigate("/registerBoiler")}
+        >
+          Register Boiler
+        </Button>
         <Button 
           variant="text" 
           sx={{ textDecoration: "underline", color: "#1A2238" }}
@@ -198,7 +206,7 @@ const Dashboard = () => {
           </Table>
         </TableContainer>
       ) : (
-        <p>You have no linked boilers.</p>
+        <p>You have no linked boilers. Register a boiler by scanning the QR code on the tag using your device's camera, or select "Register Boiler" above. </p>
       )}
     </div>
   );
