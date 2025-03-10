@@ -10,8 +10,11 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Remove the token cookie and update context
-    Cookies.remove("token");
+    // Remove the token from cookies (with the same path used when setting the cookie)
+    Cookies.remove("token", { path: "/" });
+    // Also remove from localStorage
+    localStorage.removeItem("token");
+    // Clear the user from context and navigate to login
     setUser(null);
     navigate("/login");
   };
@@ -24,7 +27,6 @@ const Header = () => {
         <Link to="#">How it works</Link>
       </div>
       <div className="header-right">
-        
         {user ? (
           <div className="header-user-container">
             <div className="header-user">
