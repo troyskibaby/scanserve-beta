@@ -1,4 +1,3 @@
-// Dashboard.js
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +11,7 @@ import {
   TableRow,
   Paper,
   Button,
+  ButtonGroup,
   Box,
   Alert,
   Grid,
@@ -87,138 +87,126 @@ const Dashboard = () => {
     );
   }
 
-  const countBoilersDueSoon = () => {
-    if (!boilers || boilers.length === 0) return 0;
-    const now = new Date();
-    return boilers.filter(b => {
-      if (!b.NextServiceDueDate) return false;
-      const dueDate = new Date(b.NextServiceDueDate);
-      const diffDays = (dueDate - now) / (1000 * 60 * 60 * 24);
-      return diffDays >= 0 && diffDays <= 14;
-    }).length;
-  };
-
-  const dueSoonCount = countBoilersDueSoon();
   const displayedBoilers = boilers.slice(0, 5);
 
   if (loadingBoilers) return <div>Loading boilers...</div>;
   if (!user) return <div>Redirecting...</div>;
 
   return (
-    <div className="login-container">
-    <Box sx={{ p: 2, width: "100%", maxWidth: "1200px", mx: "auto" }}>
+    <Box className="login-container">
       <h2>Welcome, {user.FirstName || user.firstName || "User"}!</h2>
 
       {alertComponent}
 
-      {/* Visualisation Section */}
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} sm={6} md={4} display="flex" justifyContent="center">
-          <Box sx={{ width: 100, height: 100 }}>
-            <Gauge
-              value={linkedCount}
-              text={`${linkedCount} / ${maxBoilers}`}
-              valueMin={0}
-              valueMax={maxBoilers}
-              margin={{ top: 5, bottom: 5 }}
-              sx={(theme) => ({
-                [`& .${gaugeClasses.valueArc}`]: {
-                  fill: '#1A2238',
-                },
-              })}
-              aria-label="Boilers Linked Gauge"
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Box
-            sx={{
+      {/* White Background Content Box */}
+      <Box sx={{ my: 2, mx: "auto", maxWidth: 800, backgroundColor: "#fff", borderRadius: 2, boxShadow: 1, p: 3 }}>
+        
+        {/* Visualisation Section */}
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12} sm={6} display="flex" justifyContent="center">
+            <Box sx={{ width: 100, height: 100 }}>
+              <Gauge
+                value={linkedCount}
+                text={`${linkedCount} / ${maxBoilers}`}
+                valueMin={0}
+                valueMax={maxBoilers}
+                margin={{ top: 5, bottom: 5 }}
+                sx={(theme) => ({
+                  [`& .${gaugeClasses.valueArc}`]: {
+                    fill: '#1A2238',
+                  },
+                })}
+                aria-label="Boilers Linked Gauge"
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box sx={{
               p: 2,
               backgroundColor: "#1A2238",
               color: "#fff",
               borderRadius: 2,
               textAlign: "center",
-              width: "100%",
-            }}
-          >
-            <div style={{ fontSize: "2rem" }}>{dueSoonCount}</div>
-            <div>Boilers with a service due in the next 14 days</div>
-          </Box>
+            }}>
+              <div style={{ fontSize: "2rem" }}>{linkedCount}</div>
+              <div>Boilers currently linked</div>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
 
-      {/* Buttons Section */}
-      <Grid container spacing={2} sx={{ mt: 2 }} justifyContent="space-between">
-        <Grid item xs={12} sm="auto">
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              backgroundColor: "#1A2238",
-              color: "#fff",
-              "&:hover": { backgroundColor: "#1A2238" },
-            }}
-            onClick={() => navigate("/registerBoiler")}
-          >
-            Register Boiler
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm="auto">
-          <Button
-            fullWidth
-            variant="text"
-            sx={{ textDecoration: "underline", color: "#1A2238" }}
-            onClick={() => navigate("/allBoilers")}
-          >
-            View all boilers
-          </Button>
-        </Grid>
-      </Grid>
+        {/* Button Toolbar */}
+        <Box sx={{ mt: 3, mb: 3, textAlign: "center" }}>
+          <ButtonGroup variant="contained">
+            <Button
+              sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
+              onClick={() => navigate("/registerBoiler")}
+            >
+              Register Boiler
+            </Button>
+            <Button
+              sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
+              onClick={() => navigate("/allBoilers")}
+            >
+              View all boilers
+            </Button>
+          </ButtonGroup>
+        </Box>
 
-      {/* Table Section */}
-      {loadingBoilers ? (
-        <p>Loading boilers...</p>
-      ) : boilerError ? (
-        <p style={{ color: "red" }}>{boilerError}</p>
-      ) : boilers.length > 0 ? (
-        <TableContainer component={Paper} sx={{ mt: 2, overflowX: "auto" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {["QRCode", "Make", "Address", "Postal Code", "Actions"].map((head) => (
-                  <TableCell key={head} sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}>
-                    <b>{head}</b>
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {displayedBoilers.map((boiler, index) => (
-                <TableRow key={index}>
-                  <TableCell>{boiler.QRCode}</TableCell>
-                  <TableCell>{boiler.Make}</TableCell>
-                  <TableCell>{boiler.AddressLine1}</TableCell>
-                  <TableCell>{boiler.PostalCode}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      sx={{ backgroundColor: "#1A2238", color: "#fff" }}
-                      onClick={() => navigate(`/boilerDashboard/${boiler.QRCode}`)}
-                    >
-                      View
-                    </Button>
-                  </TableCell>
+        {/* Table Section */}
+        {boilerError ? (
+          <p style={{ color: "red" }}>{boilerError}</p>
+        ) : boilers.length > 0 ? (
+          <TableContainer component={Paper} sx={{ mt: 2, overflowX: "auto" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {["QRCode", "Make", "Address", "Postal Code", "Actions"].map((head) => (
+                    <TableCell key={head} sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}>
+                      <b>{head}</b>
+                    </TableCell>
+                  ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <p>No linked boilers found.</p>
-      )}
+              </TableHead>
+              <TableBody>
+                {displayedBoilers.map((boiler, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{boiler.QRCode}</TableCell>
+                    <TableCell>{boiler.Make}</TableCell>
+                    <TableCell>{boiler.AddressLine1}</TableCell>
+                    <TableCell>{boiler.PostalCode}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        sx={{ backgroundColor: "#1A2238", color: "#fff" }}
+                        onClick={() => navigate(`/boilerDashboard/${boiler.QRCode}`)}
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <p>No linked boilers found.</p>
+        )}
+      </Box>
+
+      <Button
+        variant="outlined"
+        sx={{
+          mt: 2,
+          borderColor: "#1A2238",
+          color: "#1A2238",
+          "&:hover": { borderColor: "#1A2238", backgroundColor: "rgba(26,34,56,0.1)" },
+        }}
+        onClick={() => navigate("/")}
+      >
+        Back to Home
+      </Button>
     </Box>
-    </div>
   );
 };
 
