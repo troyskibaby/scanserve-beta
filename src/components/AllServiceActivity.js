@@ -14,7 +14,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  CircularProgress
 } from "@mui/material";
 import config from "../config";
 import { AuthContext } from "./AuthContext";
@@ -41,7 +42,7 @@ const AllServiceActivity = () => {
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [error, setError] = useState("");
 
-  // Dropdown filter state
+  // Dropdown filter state:
   // Options: "3" for last 3 months, "6" for last 6 months, "7" for older than 6 months.
   const [filterValue, setFilterValue] = useState("6");
 
@@ -54,6 +55,7 @@ const AllServiceActivity = () => {
   useEffect(() => {
     if (qrCode) {
       const fetchServiceHistory = async () => {
+        const startTime = Date.now();
         try {
           const API_URL = `${config.apiUrl}/getServiceHistory?code=${config.key}&qrCode=${encodeURIComponent(qrCode)}`;
           const response = await fetch(API_URL, {
@@ -71,7 +73,11 @@ const AllServiceActivity = () => {
           console.error("Error fetching service history:", err);
           setError("An error occurred while fetching service history.");
         } finally {
-          setLoadingHistory(false);
+          const elapsed = Date.now() - startTime;
+          const remainingTime = 1000 - elapsed;
+          setTimeout(() => {
+            setLoadingHistory(false);
+          }, remainingTime > 0 ? remainingTime : 0);
         }
       };
       fetchServiceHistory();
@@ -99,7 +105,25 @@ const AllServiceActivity = () => {
     return true;
   });
 
-  if (loadingHistory) return <div>Loading service history...</div>;
+  if (loadingHistory) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+          padding: "20px"
+        }}
+      >
+        <CircularProgress sx={{ color: "#FF6A3d" }} />
+        <Box sx={{ mt: 2, fontSize: "1.2rem", fontWeight: "bold", color: "#FF6A3d" }}>
+          Loading service history...
+        </Box>
+      </Box>
+    );
+  }
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   return (
@@ -117,18 +141,12 @@ const AllServiceActivity = () => {
             label="Filter by Date"
             onChange={(e) => setFilterValue(e.target.value)}
             sx={{
-                backgroundColor: "#fff", // white background
-                color: "#000",           // text color, change if needed
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FF6A3d",   // white border
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FF6A3d",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FF6A3d",
-                },
-              }}
+              backgroundColor: "#fff",
+              color: "#000",
+              "& .MuiOutlinedInput-notchedOutline": { borderColor: "#FF6A3d" },
+              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#FF6A3d" },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#FF6A3d" },
+            }}
           >
             <MenuItem value="3">Last 3 months</MenuItem>
             <MenuItem value="6">Last 6 months</MenuItem>
@@ -158,7 +176,6 @@ const AllServiceActivity = () => {
                       size="small"
                       sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
                       onClick={() => {
-                        // Conditional navigation based on service type
                         if(record.Description === "Routine Service"){
                           navigate(`/routineServiceDetails/${record.RecordID}`);
                         } else if(record.Description === "Maintenance Activity"){

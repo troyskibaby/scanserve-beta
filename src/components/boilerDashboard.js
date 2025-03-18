@@ -17,7 +17,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  CircularProgress
 } from "@mui/material";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -65,10 +66,11 @@ const BoilerDashboard = () => {
     return headers;
   };
 
-  // Fetch boiler details (includes isLinked flag now)
+  // Fetch boiler details (includes isLinked flag now) with a minimum 1-second delay.
   useEffect(() => {
     if (qrCode) {
       const fetchBoilerDetails = async () => {
+        const startTime = Date.now();
         try {
           const API_URL = `${config.apiUrl}/getBoilerDetails?code=${config.key}&qrCode=${encodeURIComponent(qrCode)}`;
           const response = await fetch(API_URL, {
@@ -87,7 +89,11 @@ const BoilerDashboard = () => {
           console.error("Error fetching boiler details:", err);
           setError("An error occurred while fetching boiler details.");
         } finally {
-          setLoadingBoiler(false);
+          const elapsed = Date.now() - startTime;
+          const remainingTime = 1000 - elapsed;
+          setTimeout(() => {
+            setLoadingBoiler(false);
+          }, remainingTime > 0 ? remainingTime : 0);
         }
       };
       fetchBoilerDetails();
@@ -183,7 +189,6 @@ const BoilerDashboard = () => {
     setLinkError("");
     setLinking(true);
     const endpoint = isLinked ? "/unlinkBoiler" : "/linkBoiler";
-    // Append the code query parameter to the endpoint.
     const url = `${config.apiUrl}${endpoint}?code=${config.key}`;
     const payload = { boilerID: boiler.BoilerID };
 
@@ -233,10 +238,8 @@ const BoilerDashboard = () => {
   // Function to handle the main button click.
   const handleButtonClick = () => {
     if (isLinked) {
-      // If the boiler is already linked, show confirmation to unlink.
       setDialogOpen(true);
     } else {
-      // For linking, check if the user has reached their subscription limit.
       if (userBoilers.length >= maxBoilers) {
         setMaxReachedDialogOpen(true);
       } else {
@@ -245,7 +248,25 @@ const BoilerDashboard = () => {
     }
   };
 
-  if (loadingBoiler) return <div>Loading boiler details...</div>;
+  if (loadingBoiler) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+          padding: "20px"
+        }}
+      >
+        <CircularProgress sx={{ color: "#FF6A3d" }} />
+        <Box sx={{ mt: 2, fontSize: "1.2rem", fontWeight: "bold", color: "#FF6A3d" }}>
+          Loading your boiler details...
+        </Box>
+      </Box>
+    );
+  }
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   // Compute values for visualizations.

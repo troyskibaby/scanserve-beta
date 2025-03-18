@@ -15,7 +15,8 @@ import {
   Box,
   TextField,
   InputAdornment,
-  IconButton
+  IconButton,
+  CircularProgress
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -35,6 +36,7 @@ const AllBoilers = () => {
 
   useEffect(() => {
     const fetchUserBoilers = async () => {
+      const startTime = Date.now();
       try {
         const API_URL = `${config.apiUrl}/getUserBoilers?code=${config.key}`;
         // Retrieve token from localStorage (if available)
@@ -59,7 +61,11 @@ const AllBoilers = () => {
         console.error("Error fetching user boilers:", error);
         setError("An error occurred while fetching boilers.");
       } finally {
-        setLoadingBoilers(false);
+        const elapsed = Date.now() - startTime;
+        const remainingTime = 1000 - elapsed;
+        setTimeout(() => {
+          setLoadingBoilers(false);
+        }, remainingTime > 0 ? remainingTime : 0);
       }
     };
     if (user) {
@@ -75,7 +81,24 @@ const AllBoilers = () => {
     return address.includes(term) || postal.includes(term);
   });
 
-  if (loadingBoilers) return <div>Loading boilers...</div>;
+  if (loadingBoilers)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+          padding: "20px"
+        }}
+      >
+        <CircularProgress sx={{ color: "#FF6A3d" }} />
+        <Box sx={{ mt: 2, fontSize: "1.2rem", fontWeight: "bold", color: "#FF6A3d" }}>
+          Loading all linked boilers...
+        </Box>
+      </Box>
+    );
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   return (
@@ -106,7 +129,6 @@ const AllBoilers = () => {
         <Table>
           <TableHead>
             <TableRow>
-              
               <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Make</b></TableCell>
               <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Address</b></TableCell>
               <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Postal Code</b></TableCell>
@@ -117,7 +139,6 @@ const AllBoilers = () => {
             {filteredBoilers.length > 0 ? (
               filteredBoilers.map((boiler, index) => (
                 <TableRow key={index}>
-                  
                   <TableCell>{boiler.Make}</TableCell>
                   <TableCell>{boiler.AddressLine1}</TableCell>
                   <TableCell>{boiler.PostalCode}</TableCell>
