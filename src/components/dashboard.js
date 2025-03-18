@@ -105,6 +105,7 @@ const Dashboard = () => {
   if (!user) return <div>Redirecting...</div>;
 
   return (
+    <div className="login-container">
     <Box sx={{ p: 2, width: "100%", maxWidth: "1200px", mx: "auto" }}>
       <h2>Welcome, {user.FirstName || user.firstName || "User"}!</h2>
 
@@ -217,6 +218,7 @@ const Dashboard = () => {
         <p>No linked boilers found.</p>
       )}
     </Box>
+    </div>
   );
 };
 
