@@ -257,6 +257,7 @@ const RoutineServiceDetails = () => {
       <Box sx={{ display: "flex", gap: 2 }}>
         <TextField
           label="First Name"
+          multiline
           fullWidth
           size="small"
           margin="normal"
@@ -265,6 +266,7 @@ const RoutineServiceDetails = () => {
         />
         <TextField
           label="Last Name"
+          multiline
           fullWidth
           size="small"
           margin="normal"
@@ -274,6 +276,7 @@ const RoutineServiceDetails = () => {
       </Box>
       <TextField
         label="Email"
+        multiline
         fullWidth
         size="small"
         margin="normal"
@@ -282,6 +285,7 @@ const RoutineServiceDetails = () => {
       />
       <TextField
         label="Phone"
+        multiline
         fullWidth
         size="small"
         margin="normal"

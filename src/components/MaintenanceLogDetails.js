@@ -135,6 +135,7 @@ const MaintenanceLogDetails = () => {
         <TabPanel value={selectedTab} index={2}>
           <TextField
             label="First Name"
+            multiline
             fullWidth
             margin="normal"
             value={transformedDetails.firstName}
@@ -142,6 +143,7 @@ const MaintenanceLogDetails = () => {
           />
           <TextField
             label="Last Name"
+            multiline
             fullWidth
             margin="normal"
             value={transformedDetails.lastName}
@@ -149,6 +151,7 @@ const MaintenanceLogDetails = () => {
           />
           <TextField
             label="Email"
+            multiline
             fullWidth
             margin="normal"
             value={transformedDetails.email}
@@ -156,6 +159,7 @@ const MaintenanceLogDetails = () => {
           />
           <TextField
             label="Phone"
+            multiline
             fullWidth
             margin="normal"
             value={transformedDetails.phone}

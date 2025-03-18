@@ -231,6 +231,7 @@ const NewMaintenanceLog = () => {
             <Box sx={{ display: "flex", gap: 2 }}>
               <TextField
                 label="First Name"
+                multiline
                 fullWidth
                 size="small"
                 margin="normal"
@@ -251,6 +252,7 @@ const NewMaintenanceLog = () => {
               />
               <TextField
                 label="Last Name"
+                multiline
                 fullWidth
                 size="small"
                 margin="normal"
@@ -272,6 +274,7 @@ const NewMaintenanceLog = () => {
             </Box>
             <TextField
               label="Email"
+              multiline
               fullWidth
               size="small"
               margin="normal"
@@ -291,6 +294,7 @@ const NewMaintenanceLog = () => {
             />
             <TextField
               label="Phone"
+              multiline
               fullWidth
               size="small"
               margin="normal"
