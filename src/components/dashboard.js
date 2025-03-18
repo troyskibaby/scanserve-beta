@@ -14,7 +14,8 @@ import {
   Paper, 
   Button,
   Box,
-  Alert
+  Alert,
+  CircularProgress
 } from "@mui/material";
 import { Gauge, gaugeClasses } from '@mui/x-charts';
 
@@ -42,6 +43,7 @@ const Dashboard = () => {
   useEffect(() => {
     // Fetch the boilers linked to the current user.
     const fetchUserBoilers = async () => {
+      const startTime = Date.now();
       try {
         const API_URL = `${config.apiUrl}/getUserBoilers?code=${config.key}`;
 
@@ -58,7 +60,7 @@ const Dashboard = () => {
 
         const response = await fetch(API_URL, {
           method: "GET",
-          credentials: "include", // still include credentials
+          credentials: "include",
           headers: headers,
         });
         const data = await response.json();
@@ -71,7 +73,12 @@ const Dashboard = () => {
         console.error("Error fetching user boilers:", error);
         setBoilerError("An error occurred while fetching boilers.");
       } finally {
-        setLoadingBoilers(false);
+        // Ensure a minimum loading time of 1 second.
+        const elapsed = Date.now() - startTime;
+        const remainingTime = 1000 - elapsed;
+        setTimeout(() => {
+          setLoadingBoilers(false);
+        }, remainingTime > 0 ? remainingTime : 0);
       }
     };
 
@@ -115,7 +122,27 @@ const Dashboard = () => {
   const dueSoonCount = countBoilersDueSoon();
   const displayedBoilers = boilers.slice(0, 5);
 
-  if (loadingBoilers) return <div>Loading boilers...</div>;
+  // Display a centred spinner while loading
+  if (loadingBoilers) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+          padding: "20px"
+        }}
+      >
+        <CircularProgress sx={{ color: "#FF6A3d" }} />
+        <Box sx={{ mt: 2, fontSize: "1.2rem", fontWeight: "bold", color: "#FF6A3d" }}>
+          Loading your boilers...
+        </Box>
+      </Box>
+    );
+  }
+
   if (!user) return <div>Redirecting...</div>;
 
   return (
@@ -149,40 +176,35 @@ const Dashboard = () => {
         </Box>
       </Box>
 
-      {/* New button row: Register Boiler (left) and View all boilers (right) */}
-      {/* New button row: Register Boiler (left) and View all boilers (right) */}
-<Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-  <Button 
-    variant="contained" 
-    sx={{ 
-      backgroundColor: "#1A2238", 
-      color: "#fff", 
-      "&:hover": { backgroundColor: "#1A2238" } 
-    }}
-    onClick={() => navigate("/registerBoiler")}
-  >
-    Register Boiler
-  </Button>
-  <Button 
-    variant="text" 
-    sx={{ textDecoration: "underline", color: "#1A2238" }}
-    onClick={() => navigate("/allBoilers")}
-  >
-    View all boilers
-  </Button>
-</Box>
+      {/* New button row: Register Boiler and View all boilers */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+        <Button 
+          variant="contained" 
+          sx={{ 
+            backgroundColor: "#1A2238", 
+            color: "#fff", 
+            "&:hover": { backgroundColor: "#1A2238" } 
+          }}
+          onClick={() => navigate("/registerBoiler")}
+        >
+          Register Boiler
+        </Button>
+        <Button 
+          variant="text" 
+          sx={{ textDecoration: "underline", color: "#1A2238" }}
+          onClick={() => navigate("/allBoilers")}
+        >
+          View all boilers
+        </Button>
+      </Box>
 
-
-      {loadingBoilers ? (
-        <p>Loading boilers...</p>
-      ) : boilerError ? (
+      {boilerError ? (
         <p className="error" style={{ color: "red" }}>{boilerError}</p>
       ) : boilers.length > 0 ? (
         <TableContainer component={Paper} className="boiler-table-container" style={{ marginTop: "20px" }}>
           <Table>
             <TableHead>
               <TableRow>
-                
                 <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Make</b></TableCell>
                 <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Address</b></TableCell>
                 <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Postal Code</b></TableCell>
@@ -192,7 +214,6 @@ const Dashboard = () => {
             <TableBody>
               {displayedBoilers.map((boiler, index) => (
                 <TableRow key={index}>
-                  
                   <TableCell>{boiler.Make}</TableCell>
                   <TableCell>{boiler.AddressLine1}</TableCell>
                   <TableCell>{boiler.PostalCode}</TableCell>
@@ -212,7 +233,9 @@ const Dashboard = () => {
           </Table>
         </TableContainer>
       ) : (
-        <p>You have no linked boilers. Register a boiler by scanning the QR code on the tag using your device's camera, or select "Register Boiler" above. </p>
+        <p>
+          You have no linked boilers. Register a boiler by scanning the QR code on the tag using your device's camera, or select "Register Boiler" above.
+        </p>
       )}
     </Box>
   );
