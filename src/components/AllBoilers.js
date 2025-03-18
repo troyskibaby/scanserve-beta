@@ -106,7 +106,7 @@ const AllBoilers = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>QRCode</b></TableCell>
+              
               <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Make</b></TableCell>
               <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Address</b></TableCell>
               <TableCell sx={{ backgroundColor: "#FF6A3d", color: "#fff" }}><b>Postal Code</b></TableCell>
@@ -117,7 +117,7 @@ const AllBoilers = () => {
             {filteredBoilers.length > 0 ? (
               filteredBoilers.map((boiler, index) => (
                 <TableRow key={index}>
-                  <TableCell>{boiler.QRCode}</TableCell>
+                  
                   <TableCell>{boiler.Make}</TableCell>
                   <TableCell>{boiler.AddressLine1}</TableCell>
                   <TableCell>{boiler.PostalCode}</TableCell>
