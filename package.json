@@ -12,6 +12,7 @@
     "@mui/x-charts": "^7.27.1",
     "@types/jwt-decode": "^2.2.1",
     "cra-template": "1.2.0",
+    "html5-qrcode": "^2.3.8",
     "http-proxy-middleware": "^3.0.3",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
