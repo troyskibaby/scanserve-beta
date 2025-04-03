@@ -15,8 +15,9 @@ const LogActivity = () => {
   };
 
   return (
+    <div className="step-container">
     <Box sx={{ maxWidth: 900, mx: 'auto', mt: 6, px: 2 }}>
-      <Typography variant="h4" align="center" gutterBottom>
+      <Typography variant="h3" align="center" gutterBottom>
         What activity would you like to log?
       </Typography>
 
@@ -91,6 +92,7 @@ const LogActivity = () => {
         </Typography>
       )}
     </Box>
+    </div>
   );
 };
 
