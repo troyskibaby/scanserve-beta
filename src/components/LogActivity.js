@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, Typography, Box, Grid } from '@mui/material';
-import './LogActivity.css'; // Optional external CSS if you want to extract
+
 
 const LogActivity = () => {
   const navigate = useNavigate();
