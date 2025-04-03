@@ -24,7 +24,7 @@ import RoutineServiceDetails from "./components/RoutineServiceDetails";
 import MaintenanceLogDetails from './components/MaintenanceLogDetails.js';
 import { AuthProvider } from "./components/AuthContext";
 import QrLandingPage from './components/QRLandingPage.js';
-
+import LogActivity from './components/LogActivity'; // ✅ NEW IMPORT
 
 const App = () => {
   return (
@@ -41,8 +41,8 @@ const App = () => {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/registerBoiler/:qrCode" element={<RegisterBoiler/>} />
-            <Route path="/registerBoiler" element={<RegisterBoiler/>} />
+            <Route path="/registerBoiler/:qrCode" element={<RegisterBoiler />} />
+            <Route path="/registerBoiler" element={<RegisterBoiler />} />
             <Route path="/registration-result" element={<RegistrationResult />} />
             <Route path="/boiler-link-confirmation" element={<BoilerLinkConfirmation />} />
             <Route path="/boilerDashboard/:qrCode" element={<BoilerDashboard />} />
@@ -55,7 +55,8 @@ const App = () => {
             <Route path="/maintenanceLogDetails/:maintenanceID" element={<MaintenanceLogDetails />} />
             <Route path="/qr/:qrCode" element={<QrLandingPage />} />
 
-
+            {/* ✅ New route for Log Activity */}
+            <Route path="/log-activity" element={<LogActivity />} />
 
           </Routes>
         </div>

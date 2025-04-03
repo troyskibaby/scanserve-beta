@@ -26,6 +26,8 @@ import config from "../config";
 import { AuthContext } from "./AuthContext";
 import "./Dashboard.css";
 
+import { FaClipboardList, FaInfoCircle } from 'react-icons/fa';
+
 const BoilerDashboard = () => {
   const { qrCode } = useParams();
   const navigate = useNavigate();
@@ -325,29 +327,37 @@ const BoilerDashboard = () => {
         </Box>
       </Box>
 
-      {/* Button Group Toolbar */}
-      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-        <ButtonGroup variant="contained" sx={{ "& .MuiButtonGroup-grouped:not(:last-of-type)": { borderRight: "1px solid #9daaf2" } }}>
-          <Button
-            sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
-            onClick={() => navigate("/newRoutineService", { state: { qrCode } })}
-          >
-            New Routine Service
-          </Button>
-          <Button
-            sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
-            onClick={() => navigate("/newMaintenanceLog", { state: { qrCode } })}
-          >
-            New Maintenance Log
-          </Button>
-          <Button
-            sx={{ backgroundColor: "#1A2238", color: "#fff", "&:hover": { backgroundColor: "#1A2238" } }}
-            onClick={() => navigate(`/viewBoilerDetails/${boiler.QRCode}`)}
-          >
-            View Boiler Details
-          </Button>
-        </ButtonGroup>
-      </div>
+      {/* Updated Button Group Toolbar */}
+<div style={{ marginTop: "20px", marginBottom: "20px" }}>
+  <ButtonGroup
+    variant="contained"
+    sx={{ "& .MuiButtonGroup-grouped:not(:last-of-type)": { borderRight: "1px solid #9daaf2" } }}
+  >
+    <Button
+      startIcon={<FaClipboardList />}
+      sx={{
+        backgroundColor: "#1A2238",
+        color: "#fff",
+        "&:hover": { backgroundColor: "#1A2238" }
+      }}
+      onClick={() => navigate("/log-activity", { state: { qrCode, boilerType: boiler?.Type } })}
+    >
+      Log an Activity
+    </Button>
+    <Button
+      startIcon={<FaInfoCircle />}
+      sx={{
+        backgroundColor: "#1A2238",
+        color: "#fff",
+        "&:hover": { backgroundColor: "#1A2238" }
+      }}
+      onClick={() => navigate(`/viewBoilerDetails/${boiler.QRCode}`)}
+    >
+      View Boiler Details
+    </Button>
+  </ButtonGroup>
+</div>
+
 
       <h3>Service Activity</h3>
       <Box sx={{ textAlign: "right", mb: 1 }}>
