@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: '#1A2238' }}>
+     <AppBar position="static" sx={{ backgroundColor: '#ffffff', color: '#1A2238' }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -52,10 +52,11 @@ const Header = () => {
       <Box
   sx={{
     width: 280,
-    backgroundColor: '#1A2238',
+    backgroundColor: '#ffffff',
     height: '100%',
-    color: 'white',
+    color: '#1A2238',
   }}
+
   role="presentation"
   onClick={toggleDrawer(false)}
 >
@@ -114,7 +115,16 @@ const Header = () => {
               </ListItem>
 
               {/* Logout */}
-              <ListItem button sx={{ pl: 4 }} onClick={logout}>
+              <ListItem
+  button
+  sx={{ pl: 4 }}
+  onClick={(e) => {
+    e.stopPropagation();
+    logout();
+    navigate('/login');
+  }}
+>
+
                 <ListItemIcon>
                   <FaSignOutAlt />
                 </ListItemIcon>
