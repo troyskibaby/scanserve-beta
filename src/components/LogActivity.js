@@ -1,7 +1,7 @@
+// LogActivity.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Card, CardContent, Typography, Box, Grid } from '@mui/material';
-
+import './LogActivity.css';
 
 const LogActivity = () => {
   const navigate = useNavigate();
@@ -15,83 +15,49 @@ const LogActivity = () => {
   };
 
   return (
-    <div className="step-container">
-    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 6, px: 2 }}>
-      <Typography variant="h3" align="center" gutterBottom>
+    <div className="log-activity-container">
+      <div className="log-activity-title">
         What activity would you like to log?
-      </Typography>
+      </div>
 
       {boilerType === 'Gas' ? (
-        <Grid container spacing={3} justifyContent="center" mt={3}>
-          {/* Card 1: Coming Soon */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              sx={{
-                opacity: 0.5,
-                pointerEvents: 'none',
-                border: '2px solid #ccc',
-                textAlign: 'center',
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6">Landlord Gas Safety Record</Typography>
-                <Typography variant="body2">
-                  Official gas appliance safety certificate
-                  <br />
-                  <strong>(Coming Soon)</strong>
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        <div className="log-activity-cards">
+          {/* Landlord Gas Safety Record (Disabled) */}
+          <div className="log-activity-card disabled">
+            <h3>Landlord Gas Safety Record</h3>
+            <div className="log-activity-description">
+              Official gas safety certificate <br />
+              <strong>(Coming Soon)</strong>
+            </div>
+          </div>
 
-          {/* Card 2: Routine Service */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              sx={{
-                cursor: 'pointer',
-                border: '2px solid #1A2238',
-                '&:hover': { boxShadow: 6, transform: 'scale(1.03)' },
-                transition: 'all 0.2s ease-in-out',
-                textAlign: 'center',
-              }}
-              onClick={() => handleNavigate('/NewRoutineService')}
-            >
-              <CardContent>
-                <Typography variant="h6">Routine Service Record</Typography>
-                <Typography variant="body2">
-                  Log a standard boiler service with required checks and notes.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          {/* Routine Service */}
+          <div
+            className="log-activity-card"
+            onClick={() => handleNavigate('/NewRoutineService')}
+          >
+            <h3>Routine Service Record</h3>
+            <div className="log-activity-description">
+              Log a standard boiler service with checks and notes.
+            </div>
+          </div>
 
-          {/* Card 3: General Maintenance */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              sx={{
-                cursor: 'pointer',
-                border: '2px solid #1A2238',
-                '&:hover': { boxShadow: 6, transform: 'scale(1.03)' },
-                transition: 'all 0.2s ease-in-out',
-                textAlign: 'center',
-              }}
-              onClick={() => handleNavigate('/newMaintenanceLog')}
-            >
-              <CardContent>
-                <Typography variant="h6">General Maintenance</Typography>
-                <Typography variant="body2">
-                  Log any boiler issues, repairs or other maintenance activity.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
+          {/* General Maintenance */}
+          <div
+            className="log-activity-card"
+            onClick={() => handleNavigate('/newMaintenanceLog')}
+          >
+            <h3>General Maintenance</h3>
+            <div className="log-activity-description">
+              Track any general repairs or non-service boiler issues.
+            </div>
+          </div>
+        </div>
       ) : (
-        <Typography color="error" align="center" mt={4}>
+        <p style={{ textAlign: 'center', color: 'red' }}>
           Activity logging is only available for Gas boilers.
-        </Typography>
+        </p>
       )}
-    </Box>
     </div>
   );
 };
