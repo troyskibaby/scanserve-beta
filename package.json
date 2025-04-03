@@ -8,7 +8,7 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource/ubuntu": "^5.1.1",
     "@mui/icons-material": "^6.4.1",
-    "@mui/material": "^6.4.1",
+    "@mui/material": "^6.4.10",
     "@mui/x-charts": "^7.27.1",
     "@types/jwt-decode": "^2.2.1",
     "cra-template": "1.2.0",
