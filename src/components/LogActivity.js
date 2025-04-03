@@ -59,16 +59,7 @@ const LogActivity = () => {
 </div>
 
 
-          {/* General Maintenance */}
-          <div
-            className="log-activity-card"
-            onClick={() => handleNavigate('/newMaintenanceLog')}
-          >
-            <h3>General Maintenance</h3>
-            <div className="log-activity-description">
-              Track any general repairs or non-service boiler issues.
-            </div>
-          </div>
+         
         </div>
       ) : (
         <p style={{ textAlign: 'center', color: 'red' }}>
