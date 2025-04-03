@@ -49,7 +49,17 @@ const Header = () => {
 
       {/* Drawer Menu */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box sx={{ width: 280 }} role="presentation" onClick={toggleDrawer(false)}>
+      <Box
+  sx={{
+    width: 280,
+    backgroundColor: '#1A2238',
+    height: '100%',
+    color: 'white',
+  }}
+  role="presentation"
+  onClick={toggleDrawer(false)}
+>
+
           {user ? (
             <List>
 
