@@ -2,7 +2,10 @@
 .log-activity-container {
     max-width: 1000px;
     margin: 40px auto;
-    padding: 0 16px;
+    padding: 24px;
+    background-color: #f5f7fa; /* Light gray background */
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
   }
   
   /* Page heading */
@@ -55,5 +58,10 @@
   .log-activity-description {
     font-size: 14px;
     margin-top: 8px;
+  }
+  
+  .log-activity-card svg {
+    color: white;
+    margin-bottom: 10px;
   }
   
