@@ -241,30 +241,37 @@ const StepBoilerDetails = ({
       </label>
     </div>
 
-    <div className="form-field-inline">
-      <label htmlFor="nozzleSize">
-        Nozzle Size (gal/hr):
-        <input
-          type="number"
-          id="nozzleSize"
-          step="0.01"
-          value={formData.nozzleSize}
-          onChange={(e) => handleChange("nozzleSize", e.target.value)}
-          className="input"
-        />
-      </label>
+    <div className="form-field-inline" style={{ display: 'flex', gap: '20px' }}>
+  <div style={{ flex: 1 }}>
+    <label htmlFor="nozzleSize">
+      Nozzle Size (gal/hr):
+      <input
+        type="number"
+        id="nozzleSize"
+        step="0.01"
+        value={formData.nozzleSize}
+        onChange={(e) => handleChange("nozzleSize", e.target.value)}
+        className="input"
+        style={{ width: '100%' }}
+      />
+    </label>
+  </div>
 
-      <label htmlFor="sprayPattern">
-        Spray Pattern:
-        <input
-          type="text"
-          id="sprayPattern"
-          value={formData.sprayPattern}
-          onChange={(e) => handleChange("sprayPattern", e.target.value)}
-          className="input"
-        />
-      </label>
-    </div>
+  <div style={{ flex: 1 }}>
+    <label htmlFor="sprayPattern">
+      Spray Pattern:
+      <input
+        type="text"
+        id="sprayPattern"
+        value={formData.sprayPattern}
+        onChange={(e) => handleChange("sprayPattern", e.target.value)}
+        className="input"
+        style={{ width: '100%' }}
+      />
+    </label>
+  </div>
+</div>
+
 
     <div className="form-field">
       <label htmlFor="sprayAngle">
