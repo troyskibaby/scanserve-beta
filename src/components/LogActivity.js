@@ -1,7 +1,7 @@
-// LogActivity.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, Typography, Box, Grid } from '@mui/material';
+import './LogActivity.css'; // Optional external CSS if you want to extract
 
 const LogActivity = () => {
   const navigate = useNavigate();
@@ -15,58 +15,78 @@ const LogActivity = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4, px: 2 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 6, px: 2 }}>
+      <Typography variant="h4" align="center" gutterBottom>
         What activity would you like to log?
       </Typography>
 
       {boilerType === 'Gas' ? (
-        <Grid container spacing={3}>
-          {/* 1. Landlord Gas Safety Record (Coming Soon) */}
-          <Grid item xs={12} md={4}>
-            <Card sx={{ opacity: 0.5, cursor: 'not-allowed' }}>
+        <Grid container spacing={3} justifyContent="center" mt={3}>
+          {/* Card 1: Coming Soon */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              sx={{
+                opacity: 0.5,
+                pointerEvents: 'none',
+                border: '2px solid #ccc',
+                textAlign: 'center',
+              }}
+            >
               <CardContent>
                 <Typography variant="h6">Landlord Gas Safety Record</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Official certificate of gas appliance safety <br />
+                <Typography variant="body2">
+                  Official gas appliance safety certificate
+                  <br />
                   <strong>(Coming Soon)</strong>
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
-          {/* 2. Routine Service Record */}
-          <Grid item xs={12} md={4}>
+          {/* Card 2: Routine Service */}
+          <Grid item xs={12} sm={6} md={4}>
             <Card
-              sx={{ cursor: 'pointer', transition: '0.2s', '&:hover': { boxShadow: 6 } }}
+              sx={{
+                cursor: 'pointer',
+                border: '2px solid #1A2238',
+                '&:hover': { boxShadow: 6, transform: 'scale(1.03)' },
+                transition: 'all 0.2s ease-in-out',
+                textAlign: 'center',
+              }}
               onClick={() => handleNavigate('/NewRoutineService')}
             >
               <CardContent>
                 <Typography variant="h6">Routine Service Record</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Log a standard service with key checks and service notes.
+                <Typography variant="body2">
+                  Log a standard boiler service with required checks and notes.
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
-          {/* 3. General Maintenance */}
-          <Grid item xs={12} md={4}>
+          {/* Card 3: General Maintenance */}
+          <Grid item xs={12} sm={6} md={4}>
             <Card
-              sx={{ cursor: 'pointer', transition: '0.2s', '&:hover': { boxShadow: 6 } }}
+              sx={{
+                cursor: 'pointer',
+                border: '2px solid #1A2238',
+                '&:hover': { boxShadow: 6, transform: 'scale(1.03)' },
+                transition: 'all 0.2s ease-in-out',
+                textAlign: 'center',
+              }}
               onClick={() => handleNavigate('/newMaintenanceLog')}
             >
               <CardContent>
                 <Typography variant="h6">General Maintenance</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Track general issues or repair activity not tied to servicing.
+                <Typography variant="body2">
+                  Log any boiler issues, repairs or other maintenance activity.
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
       ) : (
-        <Typography variant="body1" color="error" mt={2}>
+        <Typography color="error" align="center" mt={4}>
           Activity logging is only available for Gas boilers.
         </Typography>
       )}

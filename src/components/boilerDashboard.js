@@ -334,7 +334,7 @@ const BoilerDashboard = () => {
     sx={{ "& .MuiButtonGroup-grouped:not(:last-of-type)": { borderRight: "1px solid #9daaf2" } }}
   >
     <Button
-      startIcon={<FaClipboardList />}
+      startIcon={<FaClipboardList color="white"/>}
       sx={{
         backgroundColor: "#1A2238",
         color: "#fff",
@@ -345,7 +345,7 @@ const BoilerDashboard = () => {
       Log an Activity
     </Button>
     <Button
-      startIcon={<FaInfoCircle />}
+      startIcon={<FaInfoCircle color="white"/>}
       sx={{
         backgroundColor: "#1A2238",
         color: "#fff",
