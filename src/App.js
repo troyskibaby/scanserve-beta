@@ -25,6 +25,8 @@ import MaintenanceLogDetails from './components/MaintenanceLogDetails.js';
 import { AuthProvider } from "./components/AuthContext";
 import QrLandingPage from './components/QRLandingPage.js';
 import LogActivity from './components/LogActivity'; // ✅ NEW IMPORT
+import { useLocation } from 'react-router-dom';
+
 
 const App = () => {
   return (

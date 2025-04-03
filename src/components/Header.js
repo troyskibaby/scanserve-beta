@@ -48,13 +48,19 @@ const Header = () => {
     </Box>
 
     {/* Menu on the Right */}
-    <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
-      <MenuIcon />
-    </IconButton>
+    <IconButton
+  edge="end"
+  color="inherit"
+  onClick={toggleDrawer(true)}
+  sx={{ padding: '12px' }}
+>
+  <MenuIcon sx={{ fontSize: 32 }} />  {/* 👈 default is 24 */}
+</IconButton>
+
   </Toolbar>
 </AppBar>
 
-<Box sx={{ height: '2px', backgroundColor: '#9daaf2' }} />
+
 
 
 
@@ -130,17 +136,15 @@ const Header = () => {
   button
   sx={{ pl: 4 }}
   onClick={(e) => {
-    e.stopPropagation();
-    logout();
-    navigate('/login');
+    e.stopPropagation(); // prevent drawer auto-close
+    logout();            // clear auth token/context
+    navigate('/login');  // redirect user
   }}
 >
+  <ListItemIcon><FaSignOutAlt /></ListItemIcon>
+  <ListItemText primary="Logout" />
+</ListItem>
 
-                <ListItemIcon>
-                  <FaSignOutAlt />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
-              </ListItem>
             </List>
           ) : (
             <List>
