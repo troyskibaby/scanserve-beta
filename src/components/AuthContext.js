@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }) => {
   const loadUserFromToken = async () => {
     console.log("document.cookie:", document.cookie);
 
-    // Try to get the token from localStorage first.
     let token = localStorage.getItem("token");
     if (token) {
       console.log("Token retrieved from localStorage:", token);
@@ -41,9 +40,7 @@ export const AuthProvider = ({ children }) => {
 
     if (token) {
       try {
-        // Attempt to dynamically import jwt-decode.
         const jwtDecodeModule = await import("jwt-decode");
-        // Try to use the default export or the module itself.
         const jwtDecode = jwtDecodeModule.default || jwtDecodeModule;
         let decoded;
         if (typeof jwtDecode === "function") {
@@ -54,7 +51,6 @@ export const AuthProvider = ({ children }) => {
         }
         console.log("Decoded token:", decoded);
 
-        // Check if the token is expired (decoded.exp is in seconds)
         if (decoded.exp * 1000 < Date.now()) {
           console.log("Token is expired.");
           setUser(null);
@@ -67,7 +63,6 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error("Error decoding token:", error);
         try {
-          // Fallback to the simple decoder if dynamic import fails.
           const decoded = simpleJwtDecode(token);
           console.log("Decoded token with fallback:", decoded);
           if (decoded.exp * 1000 < Date.now()) {
@@ -91,12 +86,28 @@ export const AuthProvider = ({ children }) => {
     setLoadingAuth(false);
   };
 
+  // ✅ LOGOUT FUNCTION
+  const logout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("token");
+    setUser(null);
+    console.log("User logged out.");
+  };
+
   useEffect(() => {
     loadUserFromToken();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loadUserFromToken, loadingAuth }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        loadUserFromToken,
+        logout,              // ✅ expose logout here
+        loadingAuth,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
