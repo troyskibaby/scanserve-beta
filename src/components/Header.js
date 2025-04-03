@@ -33,7 +33,7 @@ const Header = () => {
 
   return (
     <>
-<AppBar position="static" sx={{ backgroundColor: '#1A2238', color: '#ffffff' }}>
+<AppBar position="static" elevation={0} sx={{ backgroundColor: '#1A2238', color: '#ffffff' }}>
   <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
     {/* Logo on the Left */}
     <Box
@@ -43,7 +43,7 @@ const Header = () => {
       <img
         src={logo}
         alt="ScanServe Logo"
-        style={{ height: '40px', marginRight: '10px' }}
+        style={{ height: '60px', marginRight: '12px' }}
       />
     </Box>
 
