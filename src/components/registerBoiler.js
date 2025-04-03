@@ -224,6 +224,65 @@ const StepBoilerDetails = ({
           </label>
         </div>
       )}
+      {formData.type === "Oil" && (
+  <>
+    <h4 style={{ marginTop: '20px' }}>Burner Details</h4>
+
+    <div className="form-field">
+      <label htmlFor="codNumber">
+        CoD Number:
+        <input
+          type="text"
+          id="codNumber"
+          value={formData.codNumber}
+          onChange={(e) => handleChange("codNumber", e.target.value)}
+          className="input"
+        />
+      </label>
+    </div>
+
+    <div className="form-field-inline">
+      <label htmlFor="nozzleSize">
+        Nozzle Size (gal/hr):
+        <input
+          type="number"
+          id="nozzleSize"
+          step="0.01"
+          value={formData.nozzleSize}
+          onChange={(e) => handleChange("nozzleSize", e.target.value)}
+          className="input"
+        />
+      </label>
+
+      <label htmlFor="sprayPattern">
+        Spray Pattern:
+        <input
+          type="text"
+          id="sprayPattern"
+          value={formData.sprayPattern}
+          onChange={(e) => handleChange("sprayPattern", e.target.value)}
+          className="input"
+        />
+      </label>
+    </div>
+
+    <div className="form-field">
+      <label htmlFor="sprayAngle">
+        Spray Angle (0–360°):
+        <input
+          type="number"
+          id="sprayAngle"
+          min="0"
+          max="360"
+          value={formData.sprayAngle}
+          onChange={(e) => handleChange("sprayAngle", e.target.value)}
+          className="input"
+        />
+      </label>
+    </div>
+  </>
+)}
+
       {formData.type === "Other" && (
         <div className="form-field">
           <label htmlFor="otherType">
@@ -446,6 +505,10 @@ const RegisterBoiler = () => {
     // Boiler install details
     dateInstalled: '',
     unknownDate: false,
+  codNumber: '',
+  nozzleSize: '',
+  sprayPattern: '',
+  sprayAngle: '',
     // Location details
     addressLine1: '',
     addressLine2: '',
@@ -474,12 +537,15 @@ const RegisterBoiler = () => {
         serialNumber: formData.serialNumber,
         type: formData.type,
         gcNumber: formData.gcNumber,
-        codNumber: '', // if needed
+        codNumber: formData.codNumber || null,
         otherType: formData.otherType,
         addressLine1: formData.addressLine1,
         addressLine2: formData.addressLine2,
         city: formData.city,
         postalCode: formData.postcode,
+        nozzleSize: formData.type === "Oil" ? parseFloat(formData.nozzleSize) || null : null,
+        sprayPattern: formData.type === "Oil" ? formData.sprayPattern || null : null,
+        sprayAngle: formData.type === "Oil" ? parseInt(formData.sprayAngle) || null : null,
       };
 
       const response = await fetch(API_URL, {
