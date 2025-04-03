@@ -17,6 +17,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { AuthContext } from './AuthContext';
 import { FaUser, FaBell, FaSignOutAlt, FaCogs, FaIdBadge, FaCreditCard, FaHome } from 'react-icons/fa';
+import logo from '../assets/logo.png'; // Adjust path if needed
+
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
@@ -32,20 +34,30 @@ const Header = () => {
 
   return (
     <>
-     <AppBar position="static" sx={{ backgroundColor: '#ffffff', color: '#1A2238' }}>
-        <Toolbar>
-          <Typography
-            variant="h6"
-            sx={{ flexGrow: 1, cursor: 'pointer' }}
-            onClick={() => navigate('/')}
-          >
-            ScanServe
-          </Typography>
-          <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+<AppBar position="static" sx={{ backgroundColor: '#1A2238', color: '#ffffff' }}>
+  <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    {/* Logo on the Left */}
+    <Box
+      sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+      onClick={() => navigate('/')}
+    >
+      <img
+        src={logo}
+        alt="ScanServe Logo"
+        style={{ height: '40px', marginRight: '10px' }}
+      />
+    </Box>
+
+    {/* Menu on the Right */}
+    <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
+      <MenuIcon />
+    </IconButton>
+  </Toolbar>
+</AppBar>
+
+<Box sx={{ height: '2px', backgroundColor: '#9daaf2' }} />
+
+
 
       {/* Drawer Menu */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
