@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
+import { Stepper, Step, StepLabel, Box } from "@mui/material";
 import ApplianceStep from "./steps/ApplianceStep";
 import InspectionStep from "./steps/InspectionStep";
 import FlueTestStep from "./steps/FlueTestStep";
@@ -11,8 +11,7 @@ const GasSafetyForm = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [appliances, setAppliances] = useState([]);
   const [currentAppliance, setCurrentAppliance] = useState({});
-  const [finalDetails, setFinalDetails] = useState({});
-  const [allCompleted, setAllCompleted] = useState(false);
+
 
   const steps = [
     "Appliance Details",
