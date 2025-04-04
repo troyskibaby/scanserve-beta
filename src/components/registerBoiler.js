@@ -525,6 +525,11 @@ const RegisterBoiler = () => {
     city: '',
     county: '',
     postcode: '',
+    // Owner fields
+    ownerFirstName: '',
+    ownerLastName: '',
+    ownerEmail: '',
+    isOwner: false
   });
 
   const [errors, setErrors] = useState({});
@@ -532,7 +537,7 @@ const RegisterBoiler = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
-  const steps = ['Unique Code', 'Boiler Details', 'Boiler Install Details', 'Location Details'];
+  const steps = ['Unique Code', 'Boiler Details', 'Owner Details', 'Boiler Install Details', 'Location Details'];
 
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
@@ -566,6 +571,9 @@ const RegisterBoiler = () => {
         nozzleSize: formData.type === "Oil" ? parseFloat(formData.nozzleSize) || null : null,
         sprayPattern: formData.type === "Oil" ? formData.sprayPattern || null : null,
         sprayAngle: formData.type === "Oil" ? parseInt(formData.sprayAngle) || null : null,
+        ownerFirstName: formData.ownerFirstName,
+        ownerLastName: formData.ownerLastName,
+        ownerEmail: formData.ownerEmail
       };
 
       const response = await fetch(API_URL, {
@@ -588,6 +596,84 @@ const RegisterBoiler = () => {
       setIsSubmitting(false);
       setShowSpinner(false);
     }
+  };
+
+  const StepOwnerDetails = () => {
+    const handleCheckbox = (event) => {
+      const isChecked = event.target.checked;
+      setFormData((prev) => ({
+        ...prev,
+        isOwner: isChecked,
+        ownerFirstName: isChecked ? 'Your First Name' : '',
+        ownerLastName: isChecked ? 'Your Last Name' : '',
+        ownerEmail: isChecked ? 'your@email.com' : ''
+      }));
+    };
+
+    const handleChange = (field, value) => {
+      setFormData({ ...formData, [field]: value });
+    };
+
+    return (
+      <div>
+        <h3>Owner Details</h3>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.isOwner}
+              onChange={handleCheckbox}
+              color="primary"
+            />
+          }
+          label="I am the owner"
+        />
+        <div className="form-field-inline">
+          <label htmlFor="ownerFirstName">
+            First Name:
+            <input
+              type="text"
+              id="ownerFirstName"
+              value={formData.ownerFirstName}
+              onChange={(e) => handleChange("ownerFirstName", e.target.value)}
+              disabled={formData.isOwner}
+              className="input"
+            />
+          </label>
+          <label htmlFor="ownerLastName">
+            Last Name:
+            <input
+              type="text"
+              id="ownerLastName"
+              value={formData.ownerLastName}
+              onChange={(e) => handleChange("ownerLastName", e.target.value)}
+              disabled={formData.isOwner}
+              className="input"
+            />
+          </label>
+        </div>
+        <div className="form-field">
+          <label htmlFor="ownerEmail">
+            Email Address:
+            <input
+              type="email"
+              id="ownerEmail"
+              value={formData.ownerEmail}
+              onChange={(e) => handleChange("ownerEmail", e.target.value)}
+              disabled={formData.isOwner}
+              className="input"
+            />
+          </label>
+        </div>
+        <div className="step-buttons">
+          <button onClick={prevStep} className="secondary-button">
+            Previous
+          </button>
+          <button onClick={nextStep} className="primary-button">
+            Next
+          </button>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -619,7 +705,8 @@ const RegisterBoiler = () => {
           setErrors={setErrors}
         />
       )}
-      {currentStep === 2 && (
+      {currentStep === 2 && <StepOwnerDetails />}
+      {currentStep === 3 && (
         <StepBoilerInstallDetails
           formData={formData}
           setFormData={setFormData}
@@ -627,7 +714,7 @@ const RegisterBoiler = () => {
           nextStep={nextStep}
         />
       )}
-      {currentStep === 3 && (
+      {currentStep === 4 && (
         <StepLocationDetails
           formData={formData}
           setFormData={setFormData}
@@ -660,7 +747,7 @@ const RegisterBoiler = () => {
 
       {/* Spinner Overlay */}
       {showSpinner && (
-        <Box sx={{
+        <div style={{
           position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
           backgroundColor: 'rgba(255, 255, 255, 0.9)', zIndex: 1300,
           display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
@@ -669,7 +756,7 @@ const RegisterBoiler = () => {
           <Typography sx={{ mt: 2, color: '#FF6A3d', fontWeight: 'bold', fontSize: '1.2rem' }}>
             Registering Boiler...
           </Typography>
-        </Box>
+        </div>
       )}
     </div>
   );
