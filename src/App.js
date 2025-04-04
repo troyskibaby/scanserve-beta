@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -24,9 +23,8 @@ import RoutineServiceDetails from "./components/RoutineServiceDetails";
 import MaintenanceLogDetails from './components/MaintenanceLogDetails.js';
 import { AuthProvider } from "./components/AuthContext";
 import QrLandingPage from './components/QRLandingPage.js';
-import LogActivity from './components/LogActivity'; // ✅ NEW IMPORT
-
-
+import LogActivity from './components/LogActivity';
+import GasSafetyFormWizard from './components/gasSafety/GasSafetyFormWizard'; // ✅ New import
 
 const App = () => {
   return (
@@ -57,9 +55,11 @@ const App = () => {
             <Route path="/maintenanceLogDetails/:maintenanceID" element={<MaintenanceLogDetails />} />
             <Route path="/qr/:qrCode" element={<QrLandingPage />} />
 
-            {/* ✅ New route for Log Activity */}
+            {/* ✅ Log options for boiler */}
             <Route path="/log-activity" element={<LogActivity />} />
 
+            {/* ✅ Gas Safety Record Wizard */}
+            <Route path="/log-gas-safety" element={<GasSafetyFormWizard />} />
           </Routes>
         </div>
       </Router>
