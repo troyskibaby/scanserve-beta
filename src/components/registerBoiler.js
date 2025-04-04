@@ -500,42 +500,51 @@ const StepLocationDetails = ({
 };
 
 const RegisterBoiler = () => {
-  const { qrCode } = useParams(); // Retrieve the qrCode from the URL
+  const { qrCode } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    uniqueCode: qrCode || '', // Pre-fill the unique code if available in the URL
+    uniqueCode: qrCode || '',
     make: '',
     model: '',
     serialNumber: '',
     type: '',
     gcNumber: '',
     otherType: '',
-    // Boiler install details
+    codNumber: '',
+    nozzleSize: '',
+    sprayPattern: '',
+    sprayAngle: '',
     dateInstalled: '',
     unknownDate: false,
-  codNumber: '',
-  nozzleSize: '',
-  sprayPattern: '',
-  sprayAngle: '',
-    // Location details
     addressLine1: '',
     addressLine2: '',
     city: '',
     county: '',
     postcode: '',
   });
+
   const [errors, setErrors] = useState({});
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
   const steps = ['Unique Code', 'Boiler Details', 'Boiler Install Details', 'Location Details'];
-  const navigate = useNavigate();
 
   const nextStep = () => setCurrentStep(currentStep + 1);
   const prevStep = () => setCurrentStep(currentStep - 1);
 
+  const handleFinalSubmit = () => {
+    setConfirmOpen(false);
+    setShowSpinner(true);
+    setTimeout(() => {
+      submitForm();
+    }, 2000);
+  };
+
   const submitForm = async () => {
     setIsSubmitting(true);
     try {
-      const API_URL = `${config.apiUrl}/registerBolier?code=${config.key}`; // Update with your deployed endpoint
+      const API_URL = `${config.apiUrl}/registerBolier?code=${config.key}`;
       const payload = {
         qrCode: formData.uniqueCode,
         make: formData.make,
@@ -558,22 +567,22 @@ const RegisterBoiler = () => {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Ensure cookies are sent with the request
+        credentials: 'include',
         body: JSON.stringify(payload),
       });
-      
+
       const data = await response.json();
       if (!response.ok) {
-        navigate('/registration-result', { state: { success: false, message: data.message || "Registration failed. Please try again." } });
+        navigate('/registration-result', { state: { success: false, message: data.message || "Registration failed." } });
       } else {
-        // Navigate to the boiler link confirmation screen.
         navigate('/boiler-link-confirmation', { state: { boilerID: data.boilerID, isLoggedIn: data.isLoggedIn } });
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
-      navigate('/registration-result', { state: { success: false, message: "An unexpected error occurred. Please try again." } });
+      navigate('/registration-result', { state: { success: false, message: "An unexpected error occurred." } });
     } finally {
       setIsSubmitting(false);
+      setShowSpinner(false);
     }
   };
 
@@ -612,8 +621,6 @@ const RegisterBoiler = () => {
           setFormData={setFormData}
           prevStep={prevStep}
           nextStep={nextStep}
-          errors={errors}
-          setErrors={setErrors}
         />
       )}
       {currentStep === 3 && (
@@ -621,11 +628,44 @@ const RegisterBoiler = () => {
           formData={formData}
           setFormData={setFormData}
           prevStep={prevStep}
-          submitForm={submitForm}
+          submitForm={() => setConfirmOpen(true)}
           errors={errors}
           setErrors={setErrors}
           isSubmitting={isSubmitting}
         />
+      )}
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+        <DialogTitle>Confirm Registration</DialogTitle>
+        <DialogContent>
+          <Typography>
+            You are about to register a <strong>{formData.make}</strong> boiler at <strong>{formData.addressLine1}</strong>.<br />
+            Once submitted, details may not be able to be changed.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)} color="inherit">
+            Go back to registration
+          </Button>
+          <Button onClick={handleFinalSubmit} variant="contained" color="primary">
+            Complete Registration
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Spinner Overlay */}
+      {showSpinner && (
+        <Box sx={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)', zIndex: 1300,
+          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
+        }}>
+          <CircularProgress sx={{ color: "#FF6A3d" }} />
+          <Typography sx={{ mt: 2, color: '#FF6A3d', fontWeight: 'bold', fontSize: '1.2rem' }}>
+            Registering Boiler...
+          </Typography>
+        </Box>
       )}
     </div>
   );
