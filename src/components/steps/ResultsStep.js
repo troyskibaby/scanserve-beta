@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField, Button, FormControlLabel, Checkbox, MenuItem } from "@mui/material";
+import { Box, TextField, Button, MenuItem } from "@mui/material";
 
 const ResultsStep = ({ data, setData, nextStep, prevStep }) => {
   const handleChange = (e) => {

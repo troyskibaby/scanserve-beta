@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ApplianceStep from "./steps/ApplianceStep";
 import InspectionStep from "./steps/InspectionStep";
@@ -22,7 +22,7 @@ const GasSafetyForm = () => {
   const [appliances, setAppliances] = useState([]);
   const location = useLocation();
   const qrCode = location.state?.qrCode;
-  const boilerType = location.state?.boilerType;
+ 
 
   const handleNext = (data) => {
     if (data) {
