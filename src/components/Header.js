@@ -43,7 +43,7 @@ const Header = () => {
       <img
         src={logo}
         alt="ScanServe Logo"
-        style={{ height: '60px', marginRight: '12px' }}
+        style={{ height: '80px', marginRight: '12px' }}
       />
     </Box>
 
