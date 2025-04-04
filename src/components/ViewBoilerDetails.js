@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import config from "../config";
 
-// Helper component for tab panels
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -93,101 +92,43 @@ const ViewBoilerDetails = () => {
           textColor="inherit"
           TabIndicatorProps={{ style: { backgroundColor: "#FF6A3d" } }}
         >
-          <Tab
-            label="Boiler Details"
-            sx={{
-              textTransform: "none",
-              fontWeight: "bold",
-              border: "1px solid #FF6A3d",
-              backgroundColor: tabValue === 0 ? "#FF6A3d" : "#fff",
-              color: tabValue === 0 ? "#fff" : "#FF6A3d",
-              "&:hover": {
-                backgroundColor: tabValue === 0 ? "#FF6A3d" : "rgba(255,106,61,0.1)",
-              },
-            }}
-          />
-          <Tab
-            label="Location"
-            sx={{
-              textTransform: "none",
-              fontWeight: "bold",
-              border: "1px solid #FF6A3d",
-              backgroundColor: tabValue === 1 ? "#FF6A3d" : "#fff",
-              color: tabValue === 1 ? "#fff" : "#FF6A3d",
-              "&:hover": {
-                backgroundColor: tabValue === 1 ? "#FF6A3d" : "rgba(255,106,61,0.1)",
-              },
-            }}
-          />
-          <Tab
-            label="Boiler Code"
-            sx={{
-              textTransform: "none",
-              fontWeight: "bold",
-              border: "1px solid #FF6A3d",
-              backgroundColor: tabValue === 2 ? "#FF6A3d" : "#fff",
-              color: tabValue === 2 ? "#fff" : "#FF6A3d",
-              "&:hover": {
-                backgroundColor: tabValue === 2 ? "#FF6A3d" : "rgba(255,106,61,0.1)",
-              },
-            }}
-          />
+          <Tab label="Boiler Details" sx={tabStyle(tabValue === 0)} />
+          <Tab label="Location" sx={tabStyle(tabValue === 1)} />
+          <Tab label="Boiler Code" sx={tabStyle(tabValue === 2)} />
         </Tabs>
 
         <TabPanel value={tabValue} index={0}>
-          <Box sx={{ mb: 1 }}>
-            <strong>Make:</strong> {boiler.Make}
-          </Box>
-          <Box sx={{ mb: 1 }}>
-            <strong>Model:</strong> {boiler.Model}
-          </Box>
-          <Box sx={{ mb: 1 }}>
-            <strong>Serial Number:</strong> {boiler.SerialNumber}
-          </Box>
-          <Box sx={{ mb: 1 }}>
-            <strong>Type:</strong> {boiler.Type}
-          </Box>
-          {boiler.GCNumber && (
-            <Box sx={{ mb: 1 }}>
-              <strong>GC Number:</strong> {boiler.GCNumber}
-            </Box>
+          <Box sx={{ mb: 1 }}><strong>Make:</strong> {boiler.Make}</Box>
+          <Box sx={{ mb: 1 }}><strong>Model:</strong> {boiler.Model}</Box>
+          <Box sx={{ mb: 1 }}><strong>Serial Number:</strong> {boiler.SerialNumber}</Box>
+          <Box sx={{ mb: 1 }}><strong>Type:</strong> {boiler.Type}</Box>
+          {boiler.GCNumber && <Box sx={{ mb: 1 }}><strong>GC Number:</strong> {boiler.GCNumber}</Box>}
+          {boiler.CoDNumber && <Box sx={{ mb: 1 }}><strong>CoD Number:</strong> {boiler.CoDNumber}</Box>}
+          {boiler.Type === "Oil" && (
+            <>
+              {boiler.NozzleSize && <Box sx={{ mb: 1 }}><strong>Nozzle Size:</strong> {boiler.NozzleSize} gal/hr</Box>}
+              {boiler.SprayPattern && <Box sx={{ mb: 1 }}><strong>Spray Pattern:</strong> {boiler.SprayPattern}</Box>}
+              {boiler.SprayAngle && <Box sx={{ mb: 1 }}><strong>Spray Angle:</strong> {boiler.SprayAngle}&deg;</Box>}
+            </>
           )}
-          {boiler.CoDNumber && (
-            <Box sx={{ mb: 1 }}>
-              <strong>CoD Number:</strong> {boiler.CoDNumber}
-            </Box>
-          )}
-          <Box sx={{ mb: 1 }}>
-            <strong>Other Type:</strong> {boiler.OtherType}
-          </Box>
+          {boiler.OtherType && <Box sx={{ mb: 1 }}><strong>Other Type:</strong> {boiler.OtherType}</Box>}
         </TabPanel>
+
         <TabPanel value={tabValue} index={1}>
-          <Box sx={{ mb: 1 }}>
-            <strong>Address Line 1:</strong> {boiler.AddressLine1}
-          </Box>
-          <Box sx={{ mb: 1 }}>
-            <strong>Address Line 2:</strong> {boiler.AddressLine2}
-          </Box>
-          <Box sx={{ mb: 1 }}>
-            <strong>City:</strong> {boiler.City}
-          </Box>
-          <Box sx={{ mb: 1 }}>
-            <strong>Postal Code:</strong> {boiler.PostalCode}
-          </Box>
+          <Box sx={{ mb: 1 }}><strong>Address Line 1:</strong> {boiler.AddressLine1}</Box>
+          <Box sx={{ mb: 1 }}><strong>Address Line 2:</strong> {boiler.AddressLine2}</Box>
+          <Box sx={{ mb: 1 }}><strong>City:</strong> {boiler.City}</Box>
+          <Box sx={{ mb: 1 }}><strong>Postal Code:</strong> {boiler.PostalCode}</Box>
         </TabPanel>
+
         <TabPanel value={tabValue} index={2}>
-          <Box sx={{ mb: 1 }}>
-            <strong>QRCode:</strong> {boiler.QRCode}
-          </Box>
+          <Box sx={{ mb: 1 }}><strong>QRCode:</strong> {boiler.QRCode}</Box>
         </TabPanel>
+
         <Box sx={{ mt: 2, textAlign: "center" }}>
           <Button
             variant="contained"
-            sx={{
-              backgroundColor: "#1A2238",
-              color: "#fff",
-              "&:hover": { backgroundColor: "#1A2238" },
-            }}
+            sx={{ backgroundColor: "#1A2238", color: "#fff", '&:hover': { backgroundColor: "#1A2238" } }}
             onClick={() => navigate(`/boilerDashboard/${boiler.QRCode}`)}
           >
             Back to Boiler Dashboard
@@ -197,5 +138,16 @@ const ViewBoilerDetails = () => {
     </Box>
   );
 };
+
+const tabStyle = (active) => ({
+  textTransform: "none",
+  fontWeight: "bold",
+  border: "1px solid #FF6A3d",
+  backgroundColor: active ? "#FF6A3d" : "#fff",
+  color: active ? "#fff" : "#FF6A3d",
+  '&:hover': {
+    backgroundColor: active ? "#FF6A3d" : "rgba(255,106,61,0.1)"
+  }
+});
 
 export default ViewBoilerDetails;
