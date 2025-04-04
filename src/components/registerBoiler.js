@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   Stepper, Step, StepLabel, Checkbox, FormControlLabel,
   Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, CircularProgress, Typography, Box
+  Button, CircularProgress, Typography,
 } from '@mui/material';
 import config from '../config';
 
