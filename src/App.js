@@ -24,7 +24,7 @@ import MaintenanceLogDetails from './components/MaintenanceLogDetails.js';
 import { AuthProvider } from "./components/AuthContext";
 import QrLandingPage from './components/QRLandingPage.js';
 import LogActivity from './components/LogActivity';
-import GasSafetyFormWizard from './components/gasSafety/GasSafetyFormWizard'; // ✅ New import
+import GasSafetyFormWizard from './components/GasSafetyFormWizard'; // ✅ New import
 
 const App = () => {
   return (
