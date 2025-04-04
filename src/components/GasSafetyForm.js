@@ -4,7 +4,7 @@ import ApplianceStep from "./steps/ApplianceStep";
 import InspectionStep from "./steps/InspectionStep";
 import FlueTestStep from "./steps/FlueTestStep";
 import ResultsStep from "./steps/ResultsStep";
-import FinalChecksStep from "./steps/FinalChecksStep";
+import FinalChecksStep from "./steps/FinalCheckStep";
 import SummaryStep from "./steps/SummaryStep";
 
 const GasSafetyForm = () => {
