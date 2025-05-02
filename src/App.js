@@ -24,7 +24,7 @@ import MaintenanceLogDetails from './components/MaintenanceLogDetails.js';
 import { AuthProvider } from "./components/AuthContext";
 import QrLandingPage from './components/QRLandingPage.js';
 import LogActivity from './components/LogActivity';
-import GasSafetyReportWizard from './components/GasSafetyReportWizard';
+import GasSafetyReportWizard from './components/GasSafteyReportWizard';
 
 
 
