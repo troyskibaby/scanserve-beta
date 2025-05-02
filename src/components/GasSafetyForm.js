@@ -22,7 +22,7 @@ const GasSafetyFormWizard = () => {
   const [appliances, setAppliances] = useState([{}]); // Start with a single appliance object
   const location = useLocation();
   const qrCode = location.state?.qrCode;
-  const boilerType = location.state?.boilerType;
+ 
 
   const handleNext = (stepData) => {
     const updated = [...appliances];
