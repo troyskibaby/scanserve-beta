@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Box, Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import ApplianceStep from "./ApplianceStep";
-import InspectionStep from "./InspectionStep";
-import FlueTestStep from "./FlueTestStep";
-import ResultsStep from "./ResultsStep";
-import FinalCheckStep from "./FinalCheckStep";
-import SummaryStep from "./SummaryStep";
+import ApplianceStep from ".steps/ApplianceStep";
+import InspectionStep from ".steps/InspectionStep";
+import FlueTestStep from ".steps/FlueTestStep";
+import ResultsStep from ".steps/ResultsStep";
+import FinalCheckStep from ".steps/FinalCheckStep";
+import SummaryStep from ".steps/SummaryStep";
 
 const steps = [
   "Appliance Details",
