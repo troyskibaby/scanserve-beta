@@ -24,7 +24,7 @@ import MaintenanceLogDetails from './components/MaintenanceLogDetails.js';
 import { AuthProvider } from "./components/AuthContext";
 import QrLandingPage from './components/QRLandingPage.js';
 import LogActivity from './components/LogActivity';
-import GasSafetyFormWizard from './components/GasSafetyForm.js'; // ✅ New import
+
 
 const App = () => {
   return (
@@ -57,9 +57,6 @@ const App = () => {
 
             {/* ✅ Log options for boiler */}
             <Route path="/log-activity" element={<LogActivity />} />
-
-            {/* ✅ Gas Safety Record Wizard */}
-            <Route path="/log-gas-safety" element={<GasSafetyFormWizard />} />
           </Routes>
         </div>
       </Router>
