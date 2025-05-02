@@ -26,7 +26,7 @@ const LogActivity = () => {
           {/* ✅ ENABLED Gas Safety Record */}
           <div
             className="log-activity-card"
-            onClick={() => handleNavigate('/log-gas-safety')}
+            onClick={() => handleNavigate('/gas-safety-report')}
           >
             <FaShieldAlt size={32} style={{ marginBottom: '10px' }} />
             <h3>Landlord Gas Safety Record</h3>
