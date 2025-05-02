@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Box, Stepper, Step, StepLabel, Typography } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import ApplianceStep from "./steps/ApplianceStep";
-import InspectionStep from "./steps/InspectionStep";
-import FlueTestStep from "./steps/FlueTestStep";
-import ResultsStep from "./steps/ResultsStep";
-import FinalCheckStep from "./steps/FinalCheckStep";
-import SummaryStep from "./steps/SummaryStep";
+import ApplianceStep from "./ApplianceStep";
+import InspectionStep from "./InspectionStep";
+import FlueTestStep from "./FlueTestStep";
+import ResultsStep from "./ResultsStep";
+import FinalCheckStep from "./FinalCheckStep";
+import SummaryStep from "./SummaryStep";
 
 const steps = [
   "Appliance Details",
@@ -17,19 +17,18 @@ const steps = [
   "Summary"
 ];
 
-const GasSafetyForm = () => {
+const GasSafetyFormWizard = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [appliances, setAppliances] = useState([]);
+  const [appliances, setAppliances] = useState([{}]); // Start with a single appliance object
   const location = useLocation();
   const qrCode = location.state?.qrCode;
- 
+  const boilerType = location.state?.boilerType;
 
-  const handleNext = (data) => {
-    if (data) {
-      const updated = [...appliances];
-      updated[activeStep] = data;
-      setAppliances(updated);
-    }
+  const handleNext = (stepData) => {
+    const updated = [...appliances];
+    const current = updated[0] || {}; // Merge data into first appliance
+    updated[0] = { ...current, ...stepData };
+    setAppliances(updated);
     setActiveStep((prev) => prev + 1);
   };
 
@@ -84,4 +83,4 @@ const GasSafetyForm = () => {
   );
 };
 
-export default GasSafetyForm;
+export default GasSafetyFormWizard;
