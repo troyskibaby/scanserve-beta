@@ -1,77 +1,61 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Box, TextField, Typography, Checkbox, FormControlLabel,
-  RadioGroup, Radio, Button
+  Box, Typography, Table, TableBody, TableCell, TableHead, TableRow,
+  Button, Paper
 } from '@mui/material';
 
-const LandlordDetailsStep = ({ boiler, formData, updateData, onBack }) => {
-  const [applicable, setApplicable] = useState(formData.landlordApplicable);
-  const [name, setName] = useState(formData.landlordName || '');
-  const [present, setPresent] = useState(formData.landlordPresent || '');
-
-  const handleSubmit = () => {
-    updateData({ landlordApplicable: applicable, landlordName: name, landlordPresent: present });
-  };
-
+const ApplianceListStep = ({ appliances, onAddAppliance, onBack, onNext }) => {
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>Landlord / Agent Details</Typography>
+      <Typography variant="h6" gutterBottom>
+        Appliances
+      </Typography>
 
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={!applicable}
-            onChange={(e) => setApplicable(!e.target.checked)}
-          />
-        }
-        label="Not Applicable"
-      />
+      <Paper elevation={2} sx={{ mb: 2 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><strong>Location</strong></TableCell>
+              <TableCell><strong>Make</strong></TableCell>
+              <TableCell><strong>Model</strong></TableCell>
+              <TableCell><strong>Type</strong></TableCell>
+              <TableCell><strong>Flue Type</strong></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {appliances.length > 0 ? (
+              appliances.map((appliance, index) => (
+                <TableRow key={index}>
+                  <TableCell>{appliance.location}</TableCell>
+                  <TableCell>{appliance.make}</TableCell>
+                  <TableCell>{appliance.model}</TableCell>
+                  <TableCell>{appliance.type}</TableCell>
+                  <TableCell>{appliance.flueType}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5}>No appliances added yet.</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </Paper>
 
-      {applicable && (
-        <>
-          <TextField
-            label="Name"
-            fullWidth
-            required
-            margin="normal"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <TextField
-            label="Property Address"
-            fullWidth
-            disabled
-            margin="normal"
-            value={boiler?.AddressLine1 || ''}
-          />
-
-          <TextField
-            label="Post Code"
-            fullWidth
-            disabled
-            margin="normal"
-            value={boiler?.PostalCode || ''}
-          />
-
-          <Typography sx={{ mt: 2 }}>Was the landlord/agent present?</Typography>
-          <RadioGroup
-            row
-            value={present}
-            onChange={(e) => setPresent(e.target.value)}
-          >
-            <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-            <FormControlLabel value="No" control={<Radio />} label="No" />
-          </RadioGroup>
-        </>
-      )}
-
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="outlined" onClick={onBack}>Back</Button>
-        <Button variant="contained" onClick={handleSubmit}>Next</Button>
+        <Button variant="contained" onClick={onAddAppliance}>Add Appliance</Button>
       </Box>
+
+      {appliances.length > 0 && (
+        <Box sx={{ textAlign: 'right', mt: 2 }}>
+          <Button variant="contained" color="success" onClick={onNext}>
+            Continue
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
 
-export default LandlordDetailsStep;
+export default ApplianceListStep;
