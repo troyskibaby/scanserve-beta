@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Stepper, Step, StepLabel, Box, Paper } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 import TenantDetailsStep from './GasSafetySteps/TenantDetailsStep';
 import LandlordDetailsStep from './GasSafetySteps/LandlordDetailsStep';
@@ -9,9 +10,27 @@ import AddApplianceStepper from './GasSafetySteps/AddApplianceStepper';
 const steps = ['Tenant Info', 'Landlord Info', 'Appliances', 'Add Appliance'];
 
 const GasSafetyWizard = () => {
+  const location = useLocation();
+  const boilerAddress = location.state?.boilerAddress || '';
+  const boilerPostcode = location.state?.boilerPostcode || '';
+
   const [activeStep, setActiveStep] = useState(0);
-  const [tenantDetails, setTenantDetails] = useState({});
-  const [landlordDetails, setLandlordDetails] = useState({});
+
+  const [tenantDetails, setTenantDetails] = useState({
+    tenantName: '',
+    tenantPresent: '',
+    tenantAddress: boilerAddress,
+    tenantPostcode: boilerPostcode,
+  });
+
+  const [landlordDetails, setLandlordDetails] = useState({
+    landlordName: '',
+    landlordPresent: '',
+    landlordAddress: boilerAddress,
+    landlordPostcode: boilerPostcode,
+    landlordNotApplicable: false,
+  });
+
   const [appliances, setAppliances] = useState([]);
   const [isAddingAppliance, setIsAddingAppliance] = useState(false);
 
@@ -33,7 +52,6 @@ const GasSafetyWizard = () => {
           ))}
         </Stepper>
 
-        {/* Step 0: Tenant Info */}
         {activeStep === 0 && (
           <TenantDetailsStep
             data={tenantDetails}
@@ -41,7 +59,6 @@ const GasSafetyWizard = () => {
           />
         )}
 
-        {/* Step 1: Landlord Info */}
         {activeStep === 1 && (
           <LandlordDetailsStep
             data={landlordDetails}
@@ -50,17 +67,15 @@ const GasSafetyWizard = () => {
           />
         )}
 
-        {/* Step 2: Appliance List */}
         {activeStep === 2 && !isAddingAppliance && (
           <ApplianceListStep
             appliances={appliances}
             onAddAppliance={() => setIsAddingAppliance(true)}
             onBack={back}
-            onNext={next} // continue to next form section
+            onNext={next}
           />
         )}
 
-        {/* Step 3: Add Appliance Wizard */}
         {activeStep === 2 && isAddingAppliance && (
           <AddApplianceStepper
             onSaveAppliance={handleSaveAppliance}
