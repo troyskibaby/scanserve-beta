@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { TextField, Box, Button, Typography, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
-const TenantDetailsStep = ({ boiler, formData, updateData }) => {
-  const [name, setName] = useState(formData.tenantName || '');
-  const [present, setPresent] = useState(formData.tenantPresent || '');
+const TenantDetailsStep = ({ data, onNext }) => {
+  const [formData, setFormData] = useState(data || {});
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = () => {
-    updateData({ tenantName: name, tenantPresent: present });
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.tenantName?.trim()) newErrors.tenantName = 'Name is required';
+    if (!formData.tenantPresent) newErrors.tenantPresent = 'This field is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validate()) {
+      onNext(formData);
+    }
   };
 
   return (
@@ -14,48 +28,50 @@ const TenantDetailsStep = ({ boiler, formData, updateData }) => {
       <Typography variant="h6" gutterBottom>Tenant / Home Owner Details</Typography>
 
       <TextField
-        label="Name"
+        label="Tenant / Home Owner Name"
         fullWidth
-        required
         margin="normal"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={formData.tenantName || ''}
+        onChange={(e) => handleChange('tenantName', e.target.value)}
+        error={!!errors.tenantName}
+        helperText={errors.tenantName}
       />
 
       <TextField
         label="Property Address"
         fullWidth
-        disabled
         margin="normal"
-        value={boiler?.AddressLine1 || ''}
+        value={formData.tenantAddress || ''}
+        onChange={(e) => handleChange('tenantAddress', e.target.value)}
+        disabled
       />
 
       <TextField
         label="Post Code"
         fullWidth
-        disabled
         margin="normal"
-        value={boiler?.PostalCode || ''}
+        value={formData.tenantPostcode || ''}
+        onChange={(e) => handleChange('tenantPostcode', e.target.value)}
+        disabled
       />
 
-      <Typography sx={{ mt: 2 }}>Was the tenant/homeowner present?</Typography>
-      <RadioGroup
-        row
-        value={present}
-        onChange={(e) => setPresent(e.target.value)}
-      >
-        <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-        <FormControlLabel value="No" control={<Radio />} label="No" />
-      </RadioGroup>
-
-      <Box sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          onClick={handleSubmit}
-          disabled={!name || !present}
+      <FormControl component="fieldset" margin="normal">
+        <FormLabel>Tenant Present During Inspection?</FormLabel>
+        <RadioGroup
+          row
+          value={formData.tenantPresent || ''}
+          onChange={(e) => handleChange('tenantPresent', e.target.value)}
         >
-          Next
-        </Button>
+          <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+          <FormControlLabel value="No" control={<Radio />} label="No" />
+        </RadioGroup>
+        {errors.tenantPresent && (
+          <Typography color="error">{errors.tenantPresent}</Typography>
+        )}
+      </FormControl>
+
+      <Box mt={2}>
+        <Button variant="contained" onClick={handleNext}>Next</Button>
       </Box>
     </Box>
   );
