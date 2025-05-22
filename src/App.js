@@ -27,9 +27,6 @@ import LogActivity from './components/LogActivity';
 import GasSafetyReportWizard from './components/GasSafteyReportWizard';
 
 
-
-
-
 const App = () => {
   return (
     <AuthProvider>
