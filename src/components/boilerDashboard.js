@@ -340,7 +340,16 @@ const BoilerDashboard = () => {
         color: "#fff",
         "&:hover": { backgroundColor: "#1A2238" }
       }}
-      onClick={() => navigate("/log-activity", { state: { qrCode, boilerType: boiler?.Type } })}
+      onClick={() =>
+        navigate("/log-activity", {
+          state: {
+            qrCode,
+            boilerType: boiler?.Type,
+            boilerAddress: boiler?.AddressLine1 || "",
+            boilerPostcode: boiler?.PostalCode || ""
+          }
+        })
+      }
     >
       Log an Activity
     </Button>

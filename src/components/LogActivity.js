@@ -1,4 +1,3 @@
-// LogActivity.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LogActivity.css';
@@ -10,9 +9,18 @@ const LogActivity = () => {
 
   const qrCode = location.state?.qrCode || '';
   const boilerType = location.state?.boilerType || '';
+  const boilerAddress = location.state?.boilerAddress || '';
+  const boilerPostcode = location.state?.boilerPostcode || '';
 
   const handleNavigate = (path) => {
-    navigate(path, { state: { qrCode, boilerType } }); // ✅ preserve boilerType for downstream use
+    navigate(path, {
+      state: {
+        qrCode,
+        boilerType,
+        boilerAddress,
+        boilerPostcode
+      }
+    });
   };
 
   return (
@@ -23,7 +31,6 @@ const LogActivity = () => {
 
       {boilerType === 'Gas' ? (
         <div className="log-activity-cards">
-          {/* ✅ ENABLED Gas Safety Record */}
           <div
             className="log-activity-card"
             onClick={() => handleNavigate('/gas-safety-report')}
@@ -35,7 +42,6 @@ const LogActivity = () => {
             </div>
           </div>
 
-          {/* Routine Service */}
           <div
             className="log-activity-card"
             onClick={() => handleNavigate('/NewRoutineService')}
@@ -47,7 +53,6 @@ const LogActivity = () => {
             </div>
           </div>
 
-          {/* General Maintenance */}
           <div
             className="log-activity-card"
             onClick={() => handleNavigate('/newMaintenanceLog')}
