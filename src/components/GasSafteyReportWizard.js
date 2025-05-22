@@ -1,48 +1,75 @@
 import React, { useState } from 'react';
-import { Box, Stepper, Step, StepLabel, Typography, Paper } from '@mui/material';
+import { Stepper, Step, StepLabel, Box, Paper } from '@mui/material';
+
 import TenantDetailsStep from './GasSafetySteps/TenantDetailsStep';
-import LandlordDetailsStep from './GasSafetySteps/LandlordDetailsStep.js';
+import LandlordDetailsStep from './GasSafetySteps/LandlordDetailsStep';
+import ApplianceListStep from './GasSafetySteps/ApplianceListStep';
+import AddApplianceStepper from './GasSafetySteps/AddApplianceStepper';
 
-const steps = ['Tenant / Homeowner Details', 'Landlord / Agent Details'];
+const steps = ['Tenant Info', 'Landlord Info', 'Appliances', 'Add Appliance'];
 
-const GasSafetyReportWizard = ({ boiler }) => {
+const GasSafetyWizard = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [formData, setFormData] = useState({
-    tenantName: '',
-    tenantPresent: '',
-    landlordApplicable: true,
-    landlordName: '',
-    landlordPresent: '',
-  });
+  const [tenantDetails, setTenantDetails] = useState({});
+  const [landlordDetails, setLandlordDetails] = useState({});
+  const [appliances, setAppliances] = useState([]);
+  const [isAddingAppliance, setIsAddingAppliance] = useState(false);
 
-  const handleNext = () => setActiveStep(prev => prev + 1);
-  const handleBack = () => setActiveStep(prev => prev - 1);
+  const next = () => setActiveStep((prev) => prev + 1);
+  const back = () => setActiveStep((prev) => prev - 1);
 
-  const updateData = (newData) => {
-    setFormData(prev => ({ ...prev, ...newData }));
-    handleNext();
+  const handleSaveAppliance = (appliance) => {
+    setAppliances([...appliances, appliance]);
+    setIsAddingAppliance(false);
+    setActiveStep(2); // Go back to appliance list
   };
 
   return (
-    <Box sx={{ maxWidth: 700, mx: 'auto', mt: 4 }}>
+    <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h5" gutterBottom>Gas Safety Report</Typography>
-
-        <Stepper activeStep={activeStep} alternativeLabel sx={{ my: 3 }}>
+        <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 3 }}>
           {steps.map((label, index) => (
             <Step key={index}><StepLabel>{label}</StepLabel></Step>
           ))}
         </Stepper>
 
+        {/* Step 0: Tenant Info */}
         {activeStep === 0 && (
-          <TenantDetailsStep boiler={boiler} formData={formData} updateData={updateData} />
+          <TenantDetailsStep
+            data={tenantDetails}
+            onNext={(data) => { setTenantDetails(data); next(); }}
+          />
         )}
+
+        {/* Step 1: Landlord Info */}
         {activeStep === 1 && (
-          <LandlordDetailsStep boiler={boiler} formData={formData} updateData={updateData} onBack={handleBack} />
+          <LandlordDetailsStep
+            data={landlordDetails}
+            onNext={(data) => { setLandlordDetails(data); next(); }}
+            onBack={back}
+          />
+        )}
+
+        {/* Step 2: Appliance List */}
+        {activeStep === 2 && !isAddingAppliance && (
+          <ApplianceListStep
+            appliances={appliances}
+            onAddAppliance={() => setIsAddingAppliance(true)}
+            onBack={back}
+            onNext={next} // continue to next form section
+          />
+        )}
+
+        {/* Step 3: Add Appliance Wizard */}
+        {activeStep === 2 && isAddingAppliance && (
+          <AddApplianceStepper
+            onSaveAppliance={handleSaveAppliance}
+            onCancel={() => setIsAddingAppliance(false)}
+          />
         )}
       </Paper>
     </Box>
   );
 };
 
-export default GasSafetyReportWizard;
+export default GasSafetyWizard;
