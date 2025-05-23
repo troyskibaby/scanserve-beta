@@ -35,8 +35,6 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
     warningIssued: ''
   });
 
-  console.log("Current Step:", activeStep);
-
   const steps = ['Appliance Details', 'Inspection', 'Flue Test', 'Results'];
 
   const updateFields = (fields) => {
@@ -47,6 +45,11 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
   const handleBack = () => {
     setActiveStep((prev) => prev - 1);
   };
+
+  // ✅ Log outside of JSX to prevent render errors
+  if (activeStep === 3) {
+    console.log("Appliance Data for Results Step:", applianceData);
+  }
 
   return (
     <Box sx={{ maxWidth: 700, mx: 'auto', mt: 4 }}>
@@ -85,17 +88,13 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
           />
         )}
 
-      {activeStep === 3 && (
-  <>
-    {console.log("Appliance Data for Results Step:", applianceData)}
-    <ResultsForm
-      data={applianceData}
-      onNext={(finalData) => onSaveAppliance({ ...applianceData, ...finalData })}
-      onBack={handleBack}
-    />
-  </>
-)}
-
+        {activeStep === 3 && (
+          <ResultsForm
+            data={applianceData}
+            onNext={(finalData) => onSaveAppliance({ ...applianceData, ...finalData })}
+            onBack={handleBack}
+          />
+        )}
       </Paper>
     </Box>
   );
