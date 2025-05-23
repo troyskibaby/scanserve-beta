@@ -91,7 +91,7 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
         {activeStep === 3 && (
           <ResultsForm
             data={applianceData}
-            onNext={(finalData) => onSaveAppliance({ ...applianceData, ...finalData })}
+            onNext={updateFields}
             onBack={handleBack}
           />
         )}
