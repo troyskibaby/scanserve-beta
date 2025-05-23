@@ -2,14 +2,45 @@ import React, { useState } from 'react';
 import {
   Box,
   TextField,
+  Button,
+  Typography,
+  FormControl,
+  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Button,
-  FormLabel,
-  FormControl,
-  Typography
+  ButtonGroup
 } from '@mui/material';
+
+const PassFailButtonGroup = ({ label, value, onChange }) => (
+  <FormControl fullWidth margin="normal">
+    <FormLabel sx={{ mb: 1 }}>{label}</FormLabel>
+    <ButtonGroup fullWidth variant="outlined">
+      <Button
+        onClick={() => onChange("Pass")}
+        sx={{
+          backgroundColor: value === "Pass" ? "green" : "inherit",
+          color: value === "Pass" ? "#fff" : "inherit",
+          borderColor: "green",
+          '&:hover': { backgroundColor: value === "Pass" ? "green" : "rgba(0,0,0,0.04)" }
+        }}
+      >
+        Pass
+      </Button>
+      <Button
+        onClick={() => onChange("Fail")}
+        sx={{
+          backgroundColor: value === "Fail" ? "red" : "inherit",
+          color: value === "Fail" ? "#fff" : "inherit",
+          borderColor: "red",
+          '&:hover': { backgroundColor: value === "Fail" ? "red" : "rgba(0,0,0,0.04)" }
+        }}
+      >
+        Fail
+      </Button>
+    </ButtonGroup>
+  </FormControl>
+);
 
 const InspectionDetailsForm = ({ data, onNext, onBack }) => {
   const [form, setForm] = useState({
@@ -21,8 +52,8 @@ const InspectionDetailsForm = ({ data, onNext, onBack }) => {
     coAlarmTested: data.coAlarmTested || '',
   });
 
-  const handleChange = (field) => (e) => {
-    setForm({ ...form, [field]: e.target.value });
+  const handleChange = (field) => (value) => {
+    setForm(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = () => {
@@ -39,7 +70,7 @@ const InspectionDetailsForm = ({ data, onNext, onBack }) => {
         margin="normal"
         type="number"
         value={form.operatingPressure}
-        onChange={handleChange('operatingPressure')}
+        onChange={(e) => handleChange('operatingPressure')(e.target.value)}
       />
 
       <TextField
@@ -48,15 +79,15 @@ const InspectionDetailsForm = ({ data, onNext, onBack }) => {
         margin="normal"
         type="number"
         value={form.heatInput}
-        onChange={handleChange('heatInput')}
+        onChange={(e) => handleChange('heatInput')(e.target.value)}
       />
 
       <FormControl fullWidth margin="normal">
         <FormLabel>Safety Device Correct Operation</FormLabel>
         <RadioGroup
-          value={form.safetyDeviceWorks}
-          onChange={handleChange('safetyDeviceWorks')}
           row
+          value={form.safetyDeviceWorks}
+          onChange={(e) => handleChange('safetyDeviceWorks')(e.target.value)}
         >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -66,9 +97,9 @@ const InspectionDetailsForm = ({ data, onNext, onBack }) => {
       <FormControl fullWidth margin="normal">
         <FormLabel>Ventilation Adequate</FormLabel>
         <RadioGroup
-          value={form.ventilationAdequate}
-          onChange={handleChange('ventilationAdequate')}
           row
+          value={form.ventilationAdequate}
+          onChange={(e) => handleChange('ventilationAdequate')(e.target.value)}
         >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -78,26 +109,20 @@ const InspectionDetailsForm = ({ data, onNext, onBack }) => {
       <FormControl fullWidth margin="normal">
         <FormLabel>CO Alarm Fitted</FormLabel>
         <RadioGroup
-          value={form.coAlarmFitted}
-          onChange={handleChange('coAlarmFitted')}
           row
+          value={form.coAlarmFitted}
+          onChange={(e) => handleChange('coAlarmFitted')(e.target.value)}
         >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
         </RadioGroup>
       </FormControl>
 
-      <FormControl fullWidth margin="normal">
-        <FormLabel>CO Alarm Tested</FormLabel>
-        <RadioGroup
-          value={form.coAlarmTested}
-          onChange={handleChange('coAlarmTested')}
-          row
-        >
-          <FormControlLabel value="Pass" control={<Radio />} label="Pass" />
-          <FormControlLabel value="Fail" control={<Radio />} label="Fail" />
-        </RadioGroup>
-      </FormControl>
+      <PassFailButtonGroup
+        label="CO Alarm Tested"
+        value={form.coAlarmTested}
+        onChange={handleChange('coAlarmTested')}
+      />
 
       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="outlined" onClick={onBack}>Back</Button>

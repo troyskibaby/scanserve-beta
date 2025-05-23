@@ -2,14 +2,46 @@ import React, { useState } from 'react';
 import {
   Box,
   TextField,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Button,
   Typography,
   FormLabel,
-  FormControl
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  ButtonGroup
 } from '@mui/material';
+
+// Shared ButtonGroup for Pass/Fail
+const PassFailButtonGroup = ({ label, value, onChange }) => (
+  <FormControl fullWidth margin="normal">
+    <FormLabel sx={{ mb: 1 }}>{label}</FormLabel>
+    <ButtonGroup fullWidth variant="outlined">
+      <Button
+        onClick={() => onChange("Pass")}
+        sx={{
+          backgroundColor: value === "Pass" ? "green" : "inherit",
+          color: value === "Pass" ? "#fff" : "inherit",
+          borderColor: "green",
+          '&:hover': { backgroundColor: value === "Pass" ? "green" : "rgba(0,0,0,0.04)" }
+        }}
+      >
+        Pass
+      </Button>
+      <Button
+        onClick={() => onChange("Fail")}
+        sx={{
+          backgroundColor: value === "Fail" ? "red" : "inherit",
+          color: value === "Fail" ? "#fff" : "inherit",
+          borderColor: "red",
+          '&:hover': { backgroundColor: value === "Fail" ? "red" : "rgba(0,0,0,0.04)" }
+        }}
+      >
+        Fail
+      </Button>
+    </ButtonGroup>
+  </FormControl>
+);
 
 const FlueTestForm = ({ data, onNext, onBack }) => {
   const [flueFlow, setFlueFlow] = useState(data.flueFlowTest || '');
@@ -34,49 +66,35 @@ const FlueTestForm = ({ data, onNext, onBack }) => {
         Flue Test Details
       </Typography>
 
-      <FormControl fullWidth margin="normal">
-        <FormLabel>Flue Flow Test</FormLabel>
-        <RadioGroup
-          value={flueFlow}
-          onChange={(e) => setFlueFlow(e.target.value)}
-        >
-          <FormControlLabel value="Pass" control={<Radio />} label="Pass" />
-          <FormControlLabel value="Fail" control={<Radio />} label="Fail" />
-        </RadioGroup>
-      </FormControl>
+      <PassFailButtonGroup
+        label="Flue Flow Test"
+        value={flueFlow}
+        onChange={setFlueFlow}
+      />
 
-      <FormControl fullWidth margin="normal">
-        <FormLabel>Spillage Test</FormLabel>
-        <RadioGroup
-          value={spillage}
-          onChange={(e) => setSpillage(e.target.value)}
-        >
-          <FormControlLabel value="Pass" control={<Radio />} label="Pass" />
-          <FormControlLabel value="Fail" control={<Radio />} label="Fail" />
-        </RadioGroup>
-      </FormControl>
+      <PassFailButtonGroup
+        label="Spillage Test"
+        value={spillage}
+        onChange={setSpillage}
+      />
 
       <FormControl fullWidth margin="normal">
         <FormLabel>Termination Satisfactory</FormLabel>
         <RadioGroup
           value={termination}
           onChange={(e) => setTermination(e.target.value)}
+          row
         >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
         </RadioGroup>
       </FormControl>
 
-      <FormControl fullWidth margin="normal">
-        <FormLabel>Visual Condition</FormLabel>
-        <RadioGroup
-          value={visualCondition}
-          onChange={(e) => setVisualCondition(e.target.value)}
-        >
-          <FormControlLabel value="Pass" control={<Radio />} label="Pass" />
-          <FormControlLabel value="Fail" control={<Radio />} label="Fail" />
-        </RadioGroup>
-      </FormControl>
+      <PassFailButtonGroup
+        label="Visual Condition"
+        value={visualCondition}
+        onChange={setVisualCondition}
+      />
 
       <TextField
         label="Combustion Performance Reading (CO: CO2 Ratio / CO2 CO)"

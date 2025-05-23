@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Stepper, Step, StepLabel, Box, Typography, Paper } from '@mui/material';
+
 import ApplianceDetailsForm from './ApplianceDetailsForm';
 import InspectionDetailsForm from './InspectionDetailsForm';
 import FlueTestForm from './FlueTestForm';
-import ResultsForm from './ResultsForm';
+import ResultsForm from './ResultsForm'; // ✅ Import this
 
 const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -13,39 +14,30 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
     model: '',
     type: '',
     flueType: '',
-    // Inspection
     operatingPressure: '',
     heatInput: '',
     safetyDeviceWorks: '',
     ventilationAdequate: '',
     coAlarmFitted: '',
     coAlarmTested: '',
-    // Flue
     flueFlowTest: '',
     spillageTest: '',
     terminationSatisfactory: '',
     visualCondition: '',
-    coReading: '',
-    co2Reading: '',
-    ratio: '',
-    // Results
+    combustionRatio: '',
     applianceSafeToUse: '',
     landlordsAppliance: '',
-    inspected: '',
+    inspected: ''
   });
 
-  const steps = ['Appliance Details', 'Inspection Details', 'Flue Test', 'Results'];
+  const steps = ['Appliance Details', 'Inspection', 'Flue Test', 'Results'];
 
-  const updateFields = (newData) => {
-    setApplianceData(prev => ({ ...prev, ...newData }));
+  const updateFields = (fields) => {
+    setApplianceData(prev => ({ ...prev, ...fields }));
     setActiveStep(prev => prev + 1);
   };
 
   const handleBack = () => setActiveStep(prev => prev - 1);
-
-  const handleSave = (finalData) => {
-    onSaveAppliance({ ...applianceData, ...finalData });
-  };
 
   return (
     <Box sx={{ maxWidth: 700, mx: 'auto', mt: 4 }}>
@@ -59,16 +51,35 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
         </Stepper>
 
         {activeStep === 0 && (
-          <ApplianceDetailsForm data={applianceData} onNext={updateFields} onCancel={onCancel} />
+          <ApplianceDetailsForm
+            data={applianceData}
+            onNext={updateFields}
+            onCancel={onCancel}
+          />
         )}
+
         {activeStep === 1 && (
-          <InspectionDetailsForm data={applianceData} onNext={updateFields} onBack={handleBack} />
+          <InspectionDetailsForm
+            data={applianceData}
+            onNext={updateFields}
+            onBack={handleBack}
+          />
         )}
+
         {activeStep === 2 && (
-          <FlueTestForm data={applianceData} onNext={updateFields} onBack={handleBack} />
+          <FlueTestForm
+            data={applianceData}
+            onNext={updateFields}
+            onBack={handleBack}
+          />
         )}
+
         {activeStep === 3 && (
-          <ResultsForm data={applianceData} onNext={handleSave} onBack={handleBack} />
+          <ResultsForm
+            data={applianceData}
+            onNext={(finalFields) => onSaveAppliance({ ...applianceData, ...finalFields })}
+            onBack={handleBack}
+          />
         )}
       </Paper>
     </Box>
