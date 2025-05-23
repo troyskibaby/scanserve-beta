@@ -4,10 +4,11 @@ import { Stepper, Step, StepLabel, Box, Typography, Paper } from '@mui/material'
 import ApplianceDetailsForm from './ApplianceDetailsForm';
 import InspectionDetailsForm from './InspectionDetailsForm';
 import FlueTestForm from './FlueTestForm';
-import ResultsForm from './ResultsForm'; // ✅ Import this
+import ResultsForm from './ResultsForm';
 
 const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
   const [activeStep, setActiveStep] = useState(0);
+
   const [applianceData, setApplianceData] = useState({
     location: '',
     make: '',
@@ -26,18 +27,24 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
     visualCondition: '',
     combustionRatio: '',
     applianceSafeToUse: '',
-    landlordsAppliance: '',
-    inspected: ''
+    isLandlordsAppliance: '',
+    applianceInspected: '',
+    faultDetails: '',
+    remedialAction: '',
+    workDetails: '',
+    warningIssued: ''
   });
 
   const steps = ['Appliance Details', 'Inspection', 'Flue Test', 'Results'];
 
   const updateFields = (fields) => {
-    setApplianceData(prev => ({ ...prev, ...fields }));
-    setActiveStep(prev => prev + 1);
+    setApplianceData((prev) => ({ ...prev, ...fields }));
+    setActiveStep((prev) => prev + 1);
   };
 
-  const handleBack = () => setActiveStep(prev => prev - 1);
+  const handleBack = () => {
+    setActiveStep((prev) => prev - 1);
+  };
 
   return (
     <Box sx={{ maxWidth: 700, mx: 'auto', mt: 4 }}>
@@ -46,7 +53,9 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
 
         <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 3 }}>
           {steps.map((label, i) => (
-            <Step key={i}><StepLabel>{label}</StepLabel></Step>
+            <Step key={i}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
           ))}
         </Stepper>
 
@@ -77,7 +86,7 @@ const AddApplianceStepper = ({ onSaveAppliance, onCancel }) => {
         {activeStep === 3 && (
           <ResultsForm
             data={applianceData}
-            onNext={(finalFields) => onSaveAppliance({ ...applianceData, ...finalFields })}
+            onNext={(finalData) => onSaveAppliance({ ...applianceData, ...finalData })}
             onBack={handleBack}
           />
         )}
