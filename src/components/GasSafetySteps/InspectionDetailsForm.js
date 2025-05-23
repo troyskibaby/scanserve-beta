@@ -5,82 +5,101 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Button,
   FormLabel,
   FormControl,
-  Button
+  Typography
 } from '@mui/material';
 
 const InspectionDetailsForm = ({ data, onNext, onBack }) => {
-  const [pressure, setPressure] = useState(data.operatingPressure || '');
-  const [input, setInput] = useState(data.heatInput || '');
-  const [safety, setSafety] = useState(data.safetyDeviceWorks || '');
-  const [ventilation, setVentilation] = useState(data.ventilationAdequate || '');
-  const [coAlarm, setCoAlarm] = useState(data.coAlarmFitted || '');
-  const [coTested, setCoTested] = useState(data.coAlarmTested || '');
+  const [form, setForm] = useState({
+    operatingPressure: data.operatingPressure || '',
+    heatInput: data.heatInput || '',
+    safetyDeviceWorks: data.safetyDeviceWorks || '',
+    ventilationAdequate: data.ventilationAdequate || '',
+    coAlarmFitted: data.coAlarmFitted || '',
+    coAlarmTested: data.coAlarmTested || '',
+  });
+
+  const handleChange = (field) => (e) => {
+    setForm({ ...form, [field]: e.target.value });
+  };
 
   const handleSubmit = () => {
-    onNext({
-      operatingPressure: pressure,
-      heatInput: input,
-      safetyDeviceWorks: safety,
-      ventilationAdequate: ventilation,
-      coAlarmFitted: coAlarm,
-      coAlarmTested: coTested
-    });
+    onNext(form);
   };
 
   return (
     <Box>
+      <Typography variant="h6" gutterBottom>Inspection Details</Typography>
+
       <TextField
         label="Operating Pressure (mbar)"
         fullWidth
         margin="normal"
         type="number"
-        value={pressure}
-        onChange={(e) => setPressure(e.target.value)}
+        value={form.operatingPressure}
+        onChange={handleChange('operatingPressure')}
       />
+
       <TextField
         label="Heat Input (kW)"
         fullWidth
         margin="normal"
         type="number"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={form.heatInput}
+        onChange={handleChange('heatInput')}
       />
 
-      <FormControl component="fieldset" margin="normal">
+      <FormControl fullWidth margin="normal">
         <FormLabel>Safety Device Correct Operation</FormLabel>
-        <RadioGroup row value={safety} onChange={(e) => setSafety(e.target.value)}>
+        <RadioGroup
+          value={form.safetyDeviceWorks}
+          onChange={handleChange('safetyDeviceWorks')}
+          row
+        >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
         </RadioGroup>
       </FormControl>
 
-      <FormControl component="fieldset" margin="normal">
+      <FormControl fullWidth margin="normal">
         <FormLabel>Ventilation Adequate</FormLabel>
-        <RadioGroup row value={ventilation} onChange={(e) => setVentilation(e.target.value)}>
+        <RadioGroup
+          value={form.ventilationAdequate}
+          onChange={handleChange('ventilationAdequate')}
+          row
+        >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
         </RadioGroup>
       </FormControl>
 
-      <FormControl component="fieldset" margin="normal">
+      <FormControl fullWidth margin="normal">
         <FormLabel>CO Alarm Fitted</FormLabel>
-        <RadioGroup row value={coAlarm} onChange={(e) => setCoAlarm(e.target.value)}>
+        <RadioGroup
+          value={form.coAlarmFitted}
+          onChange={handleChange('coAlarmFitted')}
+          row
+        >
           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           <FormControlLabel value="No" control={<Radio />} label="No" />
         </RadioGroup>
       </FormControl>
 
-      <FormControl component="fieldset" margin="normal">
+      <FormControl fullWidth margin="normal">
         <FormLabel>CO Alarm Tested</FormLabel>
-        <RadioGroup row value={coTested} onChange={(e) => setCoTested(e.target.value)}>
+        <RadioGroup
+          value={form.coAlarmTested}
+          onChange={handleChange('coAlarmTested')}
+          row
+        >
           <FormControlLabel value="Pass" control={<Radio />} label="Pass" />
           <FormControlLabel value="Fail" control={<Radio />} label="Fail" />
         </RadioGroup>
       </FormControl>
 
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="outlined" onClick={onBack}>Back</Button>
         <Button variant="contained" onClick={handleSubmit}>Next</Button>
       </Box>
