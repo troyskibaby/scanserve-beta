@@ -3,17 +3,30 @@ import React, { useState } from 'react';
 const SubscriptionStep = ({ formData, setFormData, submitForm, prevStep, setErrors, errors }) => {
   const [subscriptionPlan, setSubscriptionPlan] = useState(formData.subscriptionPlan || '');
 
-  const handleSubscriptionChange = (plan) => {
-    setSubscriptionPlan(plan);
-    setFormData({ ...formData, subscriptionPlan: plan });
-    setErrors({ ...errors, subscriptionPlan: '' }); // Clear error when selection is made
+  const plans = [
+    {
+      id: 'price_1RnmlHH5sjpXMfN6hDkb9WPt',
+      name: 'Premium (Monthly)',
+      description: 'Up to 100 boilers - £12.50/mo',
+    },
+    {
+      id: 'price_1RnmlzH5sjpXMfN6redf8luF',
+      name: 'Premium Plus (Annual)',
+      description: 'Unlimited boilers - £200/yr',
+    },
+  ];
+
+  const handleSubscriptionChange = (planId) => {
+    setSubscriptionPlan(planId);
+    setFormData({ ...formData, subscriptionPlan: planId });
+    setErrors({ ...errors, subscriptionPlan: '' });
   };
 
   const handleSubmit = () => {
     if (!subscriptionPlan) {
       setErrors({ ...errors, subscriptionPlan: 'You must select a subscription plan' });
     } else {
-      submitForm(); // Call submitForm to finalize sign-up
+      submitForm();
     }
   };
 
@@ -23,47 +36,28 @@ const SubscriptionStep = ({ formData, setFormData, submitForm, prevStep, setErro
       <p className="subtitle">Select a plan that best fits your needs.</p>
 
       <div className="subscription-cards">
-        {/* Basic Plan Option */}
-        <label className={`card ${subscriptionPlan === 'Basic' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="subscriptionPlan"
-            value="Basic"
-            checked={subscriptionPlan === 'Basic'}
-            onChange={() => handleSubscriptionChange('Basic')}
-            className="hidden"
-          />
-          <div className="card-content">
-            <h3>Basic</h3>
-            <p>Access to standard features</p>
-          </div>
-        </label>
-
-        {/* Premium Plan Option */}
-        <label className={`card ${subscriptionPlan === 'Premium' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="subscriptionPlan"
-            value="Premium"
-            checked={subscriptionPlan === 'Premium'}
-            onChange={() => handleSubscriptionChange('Premium')}
-            className="hidden"
-          />
-          <div className="card-content">
-            <h3>Premium</h3>
-            <p>Access to all features, including premium tools</p>
-          </div>
-        </label>
+        {plans.map((plan) => (
+          <label
+            key={plan.id}
+            className={`card ${subscriptionPlan === plan.id ? 'selected' : ''}`}
+          >
+            <input
+              type="radio"
+              name="subscriptionPlan"
+              value={plan.id}
+              checked={subscriptionPlan === plan.id}
+              onChange={() => handleSubscriptionChange(plan.id)}
+              className="hidden"
+            />
+            <div className="card-content">
+              <h3>{plan.name}</h3>
+              <p>{plan.description}</p>
+            </div>
+          </label>
+        ))}
       </div>
 
-      {/* Error Message */}
-      {errors.subscriptionPlan && <p className="error-message">{errors.subscriptionPlan}</p>}
-
-      {/* Navigation Buttons */}
-      <div className="step-buttons">
-        <button onClick={prevStep} className="secondary-button">Back</button>
-        <button onClick={handleSubmit} className="primary-button">Submit</button>
-      </div>
+      <button onClick={handleSubmit}>Subscribe and Continue</button>
     </div>
   );
 };
