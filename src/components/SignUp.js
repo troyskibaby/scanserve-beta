@@ -4,6 +4,7 @@ import NameStep from './steps/Step2Name';
 import AccountTypeStep from './steps/Step3AccountType';
 import SubscriptionStep from './steps/Step4Subscription';
 import { Stepper, Step, StepLabel } from '@mui/material';
+import config from '../config';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -69,8 +70,10 @@ const SignUp = () => {
     setIsSubmitting(true);
     setConfirmationMessage('Redirecting to secure Stripe Checkout...');
 
+    const API_URL = `${config.apiUrl}/subscribeUser?code=${config.key}`;
+
     try {
-      const res = await fetch('/api/subscribeUser', {
+      const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
