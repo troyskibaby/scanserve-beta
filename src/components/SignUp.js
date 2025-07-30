@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import EmailStep from './steps/Step1Email';
 import NameStep from './steps/Step2Name';
 import AccountTypeStep from './steps/Step3AccountType';
 import SubscriptionStep from './steps/Step4Subscription';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import config from '../config';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +18,7 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const navigate = useNavigate();
+  const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const prevStep = () => setCurrentStep(currentStep - 1);
 
@@ -70,6 +67,8 @@ const SignUp = () => {
 
   const submitForm = async () => {
     setIsSubmitting(true);
+    setConfirmationMessage('Redirecting to secure Stripe Checkout...');
+
     try {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
@@ -85,15 +84,19 @@ const SignUp = () => {
       const data = await res.json();
 
       if (data.url) {
-        window.location.href = data.url;
+        setTimeout(() => {
+          window.location.href = data.url;
+        }, 1500); // short delay to show confirmation
       } else {
         alert('Subscription error');
         setIsSubmitting(false);
+        setConfirmationMessage('');
       }
     } catch (err) {
       console.error('Error:', err);
       alert('Subscription error');
       setIsSubmitting(false);
+      setConfirmationMessage('');
     }
   };
 
@@ -118,7 +121,15 @@ const SignUp = () => {
           <Step key={index}><StepLabel>{label}</StepLabel></Step>
         ))}
       </Stepper>
+
       {stepComponents[currentStep]}
+
+      {isSubmitting && (
+        <div className="loading-indicator">
+          <p>{confirmationMessage}</p>
+          <div className="spinner" />
+        </div>
+      )}
     </div>
   );
 };
